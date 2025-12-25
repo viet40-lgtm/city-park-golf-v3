@@ -121,7 +121,7 @@ export async function addPlayersToRound(roundId: string, playerIds: string[]) {
 
     // 2. Find a default tee box (Preferred: 'White', else first available)
     // We try to match a "Men's Standard" tee usually.
-    const defaultTee = round.course.tee_boxes.find(t => t.name === 'White') || round.course.tee_boxes[0];
+    const defaultTee = round.course.tee_boxes.find((t: { name: string }) => t.name === 'White') || round.course.tee_boxes[0];
 
     // 3. Bulk create entries with default tee box
     await prisma.roundPlayer.createMany({
