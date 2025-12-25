@@ -76,7 +76,7 @@ export async function getHandicapHistory(playerId: string): Promise<HandicapHist
         : null;
 
     let allRounds = [
-        ...v2Rounds.map(r => ({
+        ...v2Rounds.map((r: { id: string; date_played: string; score_differential: number; gross_score: number | null }) => ({
             id: r.id,
             date: r.date_played,
             type: 'V2' as const,
@@ -88,7 +88,7 @@ export async function getHandicapHistory(playerId: string): Promise<HandicapHist
             slope: preferredTeeBox?.slope,
             par: coursePar,
         })),
-        ...v3Rounds.map(r => {
+        ...v3Rounds.map((r: RoundWithDetails) => {
             // Use tee box if available, otherwise find preferred tee box
             let teeBox = r.tee_box;
             if (!teeBox && player.preferred_tee_box && course) {
