@@ -106,7 +106,7 @@ export default async function PoolPage(props: { searchParams: Promise<{ roundId?
     const poolStatusRaw = await prisma.$queryRaw<{ player_id: string, in_pool: boolean }[]>`
         SELECT player_id, in_pool FROM round_players WHERE round_id = ${round.id}
     `;
-    const poolStatusMap = new Map(poolStatusRaw.map(p => [p.player_id, Boolean(p.in_pool)]));
+    const poolStatusMap = new Map(poolStatusRaw.map((p: any) => [p.player_id, Boolean(p.in_pool)]));
 
     // 2. Setup Calculations
     const playersRaw = round.players as any[];
@@ -229,7 +229,7 @@ export default async function PoolPage(props: { searchParams: Promise<{ roundId?
     };
 
     // Process each flight
-    const processedFlights = flights.map(f => {
+    const processedFlights = flights.map((f: any) => {
         const results = f.players.map(calc);
         const potFront = f.pot * 0.40;
         const potBack = f.pot * 0.40;
@@ -239,7 +239,7 @@ export default async function PoolPage(props: { searchParams: Promise<{ roundId?
             if (results.length === 0 || pot <= 0) return [];
 
             // 1. Sort by Main Score + Tie Breaker
-            const sorted = [...results].sort((a, b) => {
+            const sorted = [...results].sort((a: any, b: any) => {
                 if (a[category] !== b[category]) return a[category] - b[category];
 
                 // Tie Breaker: Use hardess holes (difficulty 1, 2, 3...)
@@ -273,7 +273,7 @@ export default async function PoolPage(props: { searchParams: Promise<{ roundId?
 
                 // Find absolute ties (exact same score AND exact same net holes)
                 // These players must split the prizes belonging to their rank range
-                const absoluteTies = sorted.slice(i).filter(r =>
+                const absoluteTies = sorted.slice(i).filter((r: any) =>
                     r[category] === currentScore &&
                     JSON.stringify(r.netHoleScores) === JSON.stringify(currentNetHoles)
                 );
@@ -288,7 +288,7 @@ export default async function PoolPage(props: { searchParams: Promise<{ roundId?
 
                 const payoutPerPlayer = (pot * combinedPercentage) / count;
                 if (payoutPerPlayer > 0) {
-                    absoluteTies.forEach(t => {
+                    absoluteTies.forEach((t: any) => {
                         finalWinners.push({
                             ...t,
                             score: t[category],
@@ -318,8 +318,8 @@ export default async function PoolPage(props: { searchParams: Promise<{ roundId?
 
     // Winnings Map for Summary
     const winningsMap = new Map<string, number>();
-    processedFlights.forEach(f => {
-        [...f.frontWinners, ...f.backWinners, ...f.totalWinners].forEach(w => {
+    processedFlights.forEach((f: any) => {
+        [...f.frontWinners, ...f.backWinners, ...f.totalWinners].forEach((w: any) => {
             const current = winningsMap.get(w.name) || 0;
             winningsMap.set(w.name, current + w.amount);
         });
@@ -366,8 +366,8 @@ export default async function PoolPage(props: { searchParams: Promise<{ roundId?
                         <h2 className="text-[14pt] font-bold text-gray-700">Pool Participants</h2>
                         <PoolManagementButton
                             roundId={round.id}
-                            allPlayers={round.players.map(p => ({ id: p.player_id, name: p.player.name }))}
-                            currentParticipantIds={allPoolParticipants.map(p => p.player_id)}
+                            allPlayers={round.players.map((p: any) => ({ id: p.player_id, name: p.player.name }))}
+                            currentParticipantIds={allPoolParticipants.map((p: any) => p.player_id)}
                         />
                     </div>
 

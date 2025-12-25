@@ -34,7 +34,7 @@ export default async function PlayersPage() {
     });
 
     // Sort by Last Name (Assuming "First Last" format)
-    const players = playersRaw.sort((a, b) => {
+    const players = playersRaw.sort((a: any, b: any) => {
         const lastNameA = a.name.split(' ').slice(1).join(' ');
         const lastNameB = b.name.split(' ').slice(1).join(' ');
         return lastNameA.localeCompare(lastNameB);

@@ -50,7 +50,7 @@ export default async function ScoresPage() {
     // Maps to store the snapshot total for each player at each round
     const roundSnapshots = new Map<string, Map<string, { pts: number; money: number }>>();
 
-    sortedRounds.forEach(round => {
+    sortedRounds.forEach((round: any) => {
         const roundYear = new Date(round.date).getFullYear();
         if (roundYear !== currentYear) return;
 
@@ -77,7 +77,7 @@ export default async function ScoresPage() {
                 flights = [sortedPlayers.slice(0, half), sortedPlayers.slice(half)];
             }
 
-            flights.forEach(flight => {
+            flights.forEach((flight: any) => {
                 const scoredPlayers = flight.map((rp: any) => {
                     if (!rp.gross_score) return { ...rp, net: 9999 };
                     const idx = rp.index_at_time ?? rp.player?.index ?? 0;
@@ -85,9 +85,9 @@ export default async function ScoresPage() {
                     const rating = rp.tee_box?.rating ?? par;
                     const ch = Math.round(idx * (slope / 113) + (rating - par));
                     return { ...rp, net: rp.gross_score - ch };
-                }).sort((a, b) => a.net - b.net);
+                }).sort((a: any, b: any) => a.net - b.net);
 
-                scoredPlayers.forEach((p, rank) => {
+                scoredPlayers.forEach((p: any, rank: number) => {
                     if (p.net === 9999) return;
                     let pts = 20;
                     if (rank === 0) pts = 100;
@@ -111,7 +111,7 @@ export default async function ScoresPage() {
     });
 
     // Final mapping for display (rounds are already in correct order from findMany)
-    const processedRounds = (rounds as any[]).map(round => {
+    const processedRounds = (rounds as any[]).map((round: any) => {
         const snapshots = roundSnapshots.get(round.id);
         return {
             ...round,
