@@ -59,15 +59,15 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
 
             // Calculate Stats (Live Index)
             const tournamentRounds: HandicapInput[] = player.rounds
-                .filter(r => r.tee_box && r.gross_score !== null)
-                .map(r => ({
+                .filter((r: any) => r.tee_box && r.gross_score !== null)
+                .map((r: any) => ({
                     id: r.id,
                     date: r.round.date,
                     score: (r.adjusted_gross_score || r.gross_score) ?? 0,
                     rating: r.tee_box!.rating,
                     slope: r.tee_box!.slope,
                 }));
-            const manualRounds: HandicapInput[] = player.manual_rounds.map(m => ({
+            const manualRounds: HandicapInput[] = player.manual_rounds.map((m: any) => ({
                 id: m.id,
                 date: m.date_played,
                 differential: m.score_differential
@@ -103,7 +103,7 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                 ];
 
                 // Find which flight this player is in
-                flights.forEach(flight => {
+                flights.forEach((flight: any) => {
                     const scoredPlayers = flight.map((p: any) => {
                         if (!p.gross_score) return { ...p, net: 9999 };
                         const idx = p.index_at_time ?? p.player?.index ?? 0;
@@ -111,10 +111,10 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                         const rating = p.tee_box?.rating ?? par;
                         const ch = Math.round(idx * (slope / 113) + (rating - par));
                         return { ...p, net: p.gross_score - ch, player_id: p.player_id };
-                    }).sort((a, b) => a.net - b.net);
+                    }).sort((a: any, b: any) => a.net - b.net);
 
                     // Find this player's rank in their flight
-                    const rank = scoredPlayers.findIndex(p => p.player_id === player.id);
+                    const rank = scoredPlayers.findIndex((p: any) => p.player_id === player.id);
                     if (rank !== -1 && scoredPlayers[rank].net !== 9999) {
                         let pts = 20; // Participation
                         if (rank === 0) pts = 100; // 1st place
@@ -208,8 +208,8 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
 
     const handleCopyEmails = async () => {
         const emails = displayedPlayers
-            .map(p => p.email)
-            .filter(email => !!email)
+            .map((p: any) => p.email)
+            .filter((email: any) => !!email)
             .join('; ');
 
         if (!emails) {
@@ -228,7 +228,7 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
 
     const handleCopyMembers = async () => {
         // Build Data Rows
-        const rows = displayedPlayers.map(p => {
+        const rows = displayedPlayers.map((p: any) => {
             const yr = (p as any).year_joined || '-';
             const tee = (p as any).preferred_tee_box ? (p as any).preferred_tee_box.charAt(0) : 'W';
             return {
@@ -245,7 +245,7 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
 
         // 1. Plain Text (Tab Separated)
         let text = `Name\tTee\tHcp\tIndex\tRank\tPts\tYr\n`;
-        rows.forEach(r => {
+        rows.forEach((r: any) => {
             text += `${r.nameLastBefore}, ${r.nameFirst}\t${r.tee}\t${r.hcp}\t${r.index}\t${r.rank}\t${r.pts}\t${r.yr}\n`;
         });
 
