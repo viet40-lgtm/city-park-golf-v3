@@ -1,13 +1,12 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { PrismaClient } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { calculateAdjustedGrossScore } from '@/lib/adjusted-score';
 import { calculateScoreDifferential } from '@/lib/handicap';
 
-type TransactionClient = Parameters<Parameters<PrismaClient['$transaction']>[0]>[0];
+type TransactionClient = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
 
 export async function postScore(formData: FormData) {
     const playerId = formData.get('playerId') as string;
