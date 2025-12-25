@@ -56,7 +56,7 @@ export async function POST() {
             const courseHandicap = Math.round(index * (slope / 113) + (rating - par));
 
             // Prepare hole scores (no difficulty needed for simple Par+2 rule)
-            const holeScores: HoleScore[] = rp.scores.map(s => ({
+            const holeScores: HoleScore[] = rp.scores.map((s: any) => ({
                 holeNumber: s.hole.hole_number,
                 par: s.hole.par,
                 strokes: s.strokes
