@@ -2,7 +2,6 @@
 
 import { prisma } from '@/lib/prisma';
 import { calculateHandicap, HandicapInput } from '@/lib/handicap';
-import { Prisma } from '@prisma/client';
 
 export interface HandicapHistoryItem {
     id: string;
@@ -39,10 +38,10 @@ export interface HandicapHistoryResponse {
     history: HandicapHistoryItem[];
 }
 
-// Define the shape of V3 rounds with includes
-type RoundWithDetails = Prisma.RoundPlayerGetPayload<{
+// Define the shape of V3 rounds with includes using type inference
+type RoundWithDetails = Awaited<ReturnType<typeof prisma.roundPlayer.findMany<{
     include: { round: true; tee_box: true }
-}>;
+}>>>[number];
 
 export async function getHandicapHistory(playerId: string): Promise<HandicapHistoryResponse> {
 
