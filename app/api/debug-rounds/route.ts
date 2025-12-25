@@ -43,12 +43,12 @@ export async function GET(request: Request) {
                 name: player.name,
                 preferredTee: player.preferred_tee_box
             },
-            v2Rounds: v2Rounds.map(r => ({
+            v2Rounds: v2Rounds.map((r: any) => ({
                 date: r.date_played,
                 differential: r.score_differential,
                 type: 'V2 Historical'
             })),
-            v3Rounds: v3Rounds.map(r => ({
+            v3Rounds: v3Rounds.map((r: any) => ({
                 date: r.round.date,
                 hasTeeBox: !!r.tee_box,
                 teeBoxName: r.tee_box?.name || 'MISSING',
