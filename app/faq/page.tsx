@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import FAQClient from '@/components/FAQClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function FAQPage() {
     const players = await prisma.player.findMany({
         orderBy: { name: 'asc' },
