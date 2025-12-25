@@ -28,14 +28,35 @@ async function backfillHandicapHistory() {
 
     console.log(`Found ${players.length} players to process.`);
 
+    // Define explicit types for rounds
+    type V3Round = {
+        type: 'v3';
+        date: string;
+        id: string;
+        score: number;
+        rating: number;
+        slope: number;
+        timestamp: number;
+    };
+
+    type V2Round = {
+        type: 'v2';
+        date: string;
+        id: string;
+        differential: number;
+        timestamp: number;
+    };
+
+    type RoundHistory = V3Round | V2Round;
+
     for (const player of players) {
         console.log(`\nProcessing ${player.name}...`);
 
         // 2. Combine and Sort All Rounds Chronologically
-        const v3Rounds = player.rounds
+        const v3Rounds: V3Round[] = player.rounds
             .filter(r => r.tee_box) // Ensure complete data
             .map(r => ({
-                type: 'v3',
+                type: 'v3' as const,
                 date: r.round.date,
                 id: r.id,
                 score: r.adjusted_gross_score || r.gross_score || 0,
@@ -44,8 +65,8 @@ async function backfillHandicapHistory() {
                 timestamp: new Date(r.round.date).getTime()
             }));
 
-        const v2Rounds = player.manual_rounds.map(r => ({
-            type: 'v2',
+        const v2Rounds: V2Round[] = player.manual_rounds.map(r => ({
+            type: 'v2' as const,
             date: r.date_played,
             id: r.id,
             differential: r.score_differential,
@@ -53,7 +74,7 @@ async function backfillHandicapHistory() {
         }));
 
         // Sort by Date ASC (Oldest first) for replay
-        const allHistory = [...v3Rounds, ...v2Rounds].sort((a, b) => a.timestamp - b.timestamp);
+        const allHistory: RoundHistory[] = [...v3Rounds, ...v2Rounds].sort((a, b) => a.timestamp - b.timestamp);
 
         // 3. Replay History
         let currentHistory: HandicapInput[] = [];
@@ -109,11 +130,11 @@ async function backfillHandicapHistory() {
         // Final sanity check: update player's current handicap_index
         const finalStats = calculateHandicap(convertToHandicapInput(currentHistory), player.low_handicap_index);
 
-        if (Math.abs(finalStats.handicapIndex - player.handicap_index) > 0.1) {
-            console.log(`  ⚠️  Mismatch! DB says ${player.handicap_index}, Calc says ${finalStats.handicapIndex}. Updating Player...`);
+        if (Math.abs(finalStats.handicapIndex - player.index) > 0.1) {
+            console.log(`  ⚠️  Mismatch! DB says ${player.index}, Calc says ${finalStats.handicapIndex}. Updating Player...`);
             await prisma.player.update({
                 where: { id: player.id },
-                data: { handicap_index: finalStats.handicapIndex }
+                data: { index: finalStats.handicapIndex }
             });
         }
     }

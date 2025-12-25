@@ -2,13 +2,7 @@
 import { PrismaClient } from '@prisma/client'
 import 'dotenv/config'
 
-const prisma = new PrismaClient({
-    datasources: {
-        db: {
-            url: process.env.DATABASE_URL,
-        },
-    },
-})
+const prisma = new PrismaClient()
 
 async function main() {
     try {
@@ -18,7 +12,7 @@ async function main() {
 
         if (count > 0) {
             const firstPlayer = await prisma.player.findFirst()
-            console.log('Sample player:', firstPlayer.name)
+            console.log('Sample player:', firstPlayer?.name)
         }
     } catch (e) {
         console.error('Connection failed:', e)

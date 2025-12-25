@@ -60,7 +60,7 @@ async function updateAdjustedScores() {
 
         // Check if values changed significantly
         const adjChanged = currentAdj !== adjustedGrossScore;
-        const diffChanged = updateDifferential && (currentDiff === null || Math.abs(currentDiff - newDifferential) > 0.001);
+        const diffChanged = updateDifferential && newDifferential !== null && (currentDiff === null || Math.abs(currentDiff - newDifferential) > 0.001);
 
         if (adjChanged || diffChanged) {
             console.log(`Updating ${rp.player.name} (${rp.round.date}):`);

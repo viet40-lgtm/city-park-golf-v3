@@ -44,7 +44,7 @@ async function checkIndexAtTime() {
     });
 
     valid.forEach(rp => {
-        console.log(`  - ${rp.player.name} on ${rp.round.date}: Index stored: ${rp.index_at_time}, Current Player Index: ${rp.player.handicap_index}`);
+        console.log(`  - ${rp.player.name} on ${rp.round.date}: Index stored: ${rp.index_at_time}, Current Player Index: ${rp.player.index}`);
     });
 }
 
