@@ -49,8 +49,8 @@ export default function EditCourseClient({ initialCourse }: { initialCourse: Cou
     };
 
     // Split holes for UI
-    const frontNine = holes.filter(h => h.hole_number <= 9);
-    const backNine = holes.filter(h => h.hole_number > 9);
+    const frontNine = holes.filter((h: any) => h.hole_number <= 9);
+    const backNine = holes.filter((h: any) => h.hole_number > 9);
 
     return (
         <div className="min-h-screen bg-white p-6 md:p-12 font-sans text-gray-900">
@@ -91,7 +91,7 @@ export default function EditCourseClient({ initialCourse }: { initialCourse: Cou
                 <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
                     <h2 className="font-bold text-lg mb-4">Tee Boxes</h2>
                     <div className="space-y-4">
-                        {tees.map((tee, idx) => (
+                        {tees.map((tee: any, idx: number) => (
                             <div key={tee.id} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                                 <div>
                                     <label className="text-xs uppercase font-bold text-gray-500">Color/Name</label>
@@ -137,13 +137,13 @@ export default function EditCourseClient({ initialCourse }: { initialCourse: Cou
                             <thead className="bg-gray-100 font-bold text-sm text-gray-700">
                                 <tr>
                                     <th className="py-2 px-2 text-left">Hole</th>
-                                    {frontNine.map(h => <th key={h.id} className="py-2 px-1 w-12">{h.hole_number}</th>)}
+                                    {frontNine.map((h: any) => <th key={h.id} className="py-2 px-1 w-12">{h.hole_number}</th>)}
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr className="border-t border-gray-100">
                                     <td className="py-2 px-2 text-left font-bold text-sm">Par</td>
-                                    {frontNine.map((h, i) => (
+                                    {frontNine.map((h: any, i: number) => (
                                         <td key={h.id} className="p-1">
                                             <input
                                                 type="number"
@@ -156,7 +156,7 @@ export default function EditCourseClient({ initialCourse }: { initialCourse: Cou
                                 </tr>
                                 <tr className="border-t border-gray-100">
                                     <td className="py-2 px-2 text-left font-bold text-sm text-gray-500">Hardness</td>
-                                    {frontNine.map((h, i) => (
+                                    {frontNine.map((h: any, i: number) => (
                                         <td key={h.id} className="p-1">
                                             <input
                                                 type="number"
@@ -178,13 +178,13 @@ export default function EditCourseClient({ initialCourse }: { initialCourse: Cou
                             <thead className="bg-gray-100 font-bold text-sm text-gray-700">
                                 <tr>
                                     <th className="py-2 px-2 text-left">Hole</th>
-                                    {backNine.map(h => <th key={h.id} className="py-2 px-1 w-12">{h.hole_number}</th>)}
+                                    {backNine.map((h: any) => <th key={h.id} className="py-2 px-1 w-12">{h.hole_number}</th>)}
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr className="border-t border-gray-100">
                                     <td className="py-2 px-2 text-left font-bold text-sm">Par</td>
-                                    {backNine.map((h, i) => ( // Note: i is relative to this array!
+                                    {backNine.map((h: any, i: number) => ( // Note: i is relative to this array!
                                         // Need to find global index.
                                         // frontNine len is 9. Index = 9 + i
                                         <td key={h.id} className="p-1">
@@ -199,7 +199,7 @@ export default function EditCourseClient({ initialCourse }: { initialCourse: Cou
                                 </tr>
                                 <tr className="border-t border-gray-100">
                                     <td className="py-2 px-2 text-left font-bold text-sm text-gray-500">Hcp</td>
-                                    {backNine.map((h, i) => (
+                                    {backNine.map((h: any, i: number) => (
                                         <td key={h.id} className="p-1">
                                             <input
                                                 type="number"

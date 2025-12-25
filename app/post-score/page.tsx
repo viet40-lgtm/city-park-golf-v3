@@ -24,7 +24,7 @@ export default async function PostScorePage() {
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2 border"
                         >
                             <option value="">Select Player</option>
-                            {players.map(p => (
+                            {players.map((p: any) => (
                                 <option key={p.id} value={p.id}>{p.name}</option>
                             ))}
                         </select>
@@ -52,9 +52,9 @@ export default async function PostScorePage() {
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2 border"
                         >
                             <option value="">Select Tee</option>
-                            {courses.map(course => (
+                            {courses.map((course: any) => (
                                 <optgroup key={course.id} label={course.name}>
-                                    {course.tee_boxes.map(tee => (
+                                    {course.tee_boxes.map((tee: any) => (
                                         <option key={tee.id} value={tee.id}>
                                             {course.name} - {tee.name} ({tee.rating}/{tee.slope})
                                         </option>

@@ -18,11 +18,11 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
     if (!course) notFound();
 
     // Group holes by Front/Back
-    const frontNine = course.holes.filter(h => h.hole_number <= 9);
-    const backNine = course.holes.filter(h => h.hole_number > 9);
+    const frontNine = course.holes.filter((h: any) => h.hole_number <= 9);
+    const backNine = course.holes.filter((h: any) => h.hole_number > 9);
 
-    const frontPar = frontNine.reduce((sum, h) => sum + h.par, 0);
-    const backPar = backNine.reduce((sum, h) => sum + h.par, 0);
+    const frontPar = frontNine.reduce((sum: number, h: any) => sum + h.par, 0);
+    const backPar = backNine.reduce((sum: number, h: any) => sum + h.par, 0);
     const totalPar = frontPar + backPar;
 
     return (
@@ -50,7 +50,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
 
                 {/* Tee Boxes Summary */}
                 <div className="space-y-8">
-                    {course.tee_boxes.map(tee => (
+                    {course.tee_boxes.map((tee: any) => (
                         <div key={tee.id} className="space-y-4">
                             <h2 className="text-2xl font-bold border-b-2 border-gray-100 pb-2">
                                 {tee.name} Tees
@@ -80,19 +80,19 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
                                         <thead className="bg-gray-100 font-bold text-gray-700">
                                             <tr>
                                                 <th className="py-2 w-24 text-left pl-4">Hole</th>
-                                                {frontNine.map(h => <th key={h.id} className="py-2 border-l border-gray-200">{h.hole_number}</th>)}
+                                                {frontNine.map((h: any) => <th key={h.id} className="py-2 border-l border-gray-200">{h.hole_number}</th>)}
                                                 <th className="py-2 border-l border-gray-200 bg-gray-200">OUT</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-200">
                                             <tr>
                                                 <td className="py-3 font-bold text-left pl-4">Par</td>
-                                                {frontNine.map(h => <td key={h.id} className="py-3 border-l border-gray-200">{h.par}</td>)}
+                                                {frontNine.map((h: any) => <td key={h.id} className="py-3 border-l border-gray-200">{h.par}</td>)}
                                                 <td className="py-3 border-l border-gray-200 font-bold bg-gray-50">{frontPar}</td>
                                             </tr>
                                             <tr>
                                                 <td className="py-3 font-bold text-left pl-4 text-gray-500">Hardness</td>
-                                                {frontNine.map(h => <td key={h.id} className="py-3 border-l border-gray-200 text-gray-500">{h.difficulty ?? '-'}</td>)}
+                                                {frontNine.map((h: any) => <td key={h.id} className="py-3 border-l border-gray-200 text-gray-500">{h.difficulty ?? '-'}</td>)}
                                                 <td className="py-3 border-l border-gray-200 bg-gray-50">-</td>
                                             </tr>
                                         </tbody>
@@ -108,7 +108,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
                                         <thead className="bg-gray-100 font-bold text-gray-700">
                                             <tr>
                                                 <th className="py-2 w-24 text-left pl-4">Hole</th>
-                                                {backNine.map(h => <th key={h.id} className="py-2 border-l border-gray-200">{h.hole_number}</th>)}
+                                                {backNine.map((h: any) => <th key={h.id} className="py-2 border-l border-gray-200">{h.hole_number}</th>)}
                                                 <th className="py-2 border-l border-gray-200 bg-gray-200">IN</th>
                                                 <th className="py-2 border-l border-gray-200 bg-gray-300">TOT</th>
                                             </tr>
@@ -116,13 +116,13 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
                                         <tbody className="divide-y divide-gray-200">
                                             <tr>
                                                 <td className="py-3 font-bold text-left pl-4">Par</td>
-                                                {backNine.map(h => <td key={h.id} className="py-3 border-l border-gray-200">{h.par}</td>)}
+                                                {backNine.map((h: any) => <td key={h.id} className="py-3 border-l border-gray-200">{h.par}</td>)}
                                                 <td className="py-3 border-l border-gray-200 font-bold bg-gray-50">{backPar}</td>
                                                 <td className="py-3 border-l border-gray-200 font-bold bg-gray-100">{totalPar}</td>
                                             </tr>
                                             <tr>
                                                 <td className="py-3 font-bold text-left pl-4 text-gray-500">Hardness</td>
-                                                {backNine.map(h => <td key={h.id} className="py-3 border-l border-gray-200 text-gray-500">{h.difficulty ?? '-'}</td>)}
+                                                {backNine.map((h: any) => <td key={h.id} className="py-3 border-l border-gray-200 text-gray-500">{h.difficulty ?? '-'}</td>)}
                                                 <td className="py-3 border-l border-gray-200 bg-gray-50">-</td>
                                                 <td className="py-3 border-l border-gray-200 bg-gray-100">-</td>
                                             </tr>
