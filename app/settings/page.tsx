@@ -1,11 +1,40 @@
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { Settings, Shield, Globe, Database, PenTool, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import RecalculateButton from './RecalculateButton';
 import BackupManager from './BackupManager';
 import MetaTagEditor from './MetaTagEditor';
 import { prisma } from '@/lib/prisma';
+
+// Native SVG components for settings/page.tsx
+const SettingsIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.72V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" />
+    </svg>
+);
+
+const ShieldIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+);
+
+const GlobeIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <circle cx="12" cy="12" r="10" /><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /><path d="M2 12h20" />
+    </svg>
+);
+
+const DatabaseIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5V19A9 3 0 0 0 21 19V5" /><path d="M3 12V19A9 3 0 0 0 21 19V12" />
+    </svg>
+);
+
+const MapPinIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M12 12.75a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" /><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+    </svg>
+);
 
 export const dynamic = 'force-dynamic';
 
@@ -14,7 +43,25 @@ export default async function SettingsPage() {
     const isAdmin = cookieStore.get('admin_session')?.value === 'true';
 
     if (!isAdmin) {
-        redirect('/');
+        return (
+            <div className="min-h-screen bg-slate-50 font-sans flex flex-col items-center justify-center p-4">
+                <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 max-w-md w-full text-center space-y-6">
+                    <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-500">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                    </div>
+                    <div className="space-y-2">
+                        <h1 className="text-2xl font-black text-gray-900 tracking-tight">Access Denied</h1>
+                        <p className="text-gray-500 text-[12pt] sm:text-[15pt]">You must be logged in as an administrator to access system settings.</p>
+                    </div>
+                    <div className="pt-4 space-y-3">
+                        <p className="text-gray-400 text-xs italic text-[12pt] sm:text-[15pt]">Please use the 'Login' button at the top of the page to authenticate.</p>
+                        <Link href="/" className="block w-full py-3 bg-black text-white rounded-full font-bold text-[12pt] sm:text-[15pt] hover:bg-gray-800 transition-all active:scale-95">Return Home</Link>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     const courses = await prisma.course.findMany({
@@ -40,7 +87,7 @@ export default async function SettingsPage() {
                     {/* USGA Handicap System */}
                     <div className="bg-white rounded-xl shadow-sm border border-blue-100 overflow-hidden">
                         <div className="p-3 bg-blue-50 border-b border-blue-100 flex items-center gap-2">
-                            <Shield className="w-5 h-5 text-blue-600" />
+                            <ShieldIcon className="w-5 h-5 text-blue-600" />
                             <h2 className="font-bold text-blue-900 text-[12pt] sm:text-[15pt]">USGA Handicap System</h2>
                         </div>
                         <div className="p-3 space-y-4">
@@ -54,7 +101,7 @@ export default async function SettingsPage() {
                     {/* Site Configuration */}
                     <div className="bg-white rounded-xl shadow-sm border border-purple-100 overflow-hidden">
                         <div className="p-3 bg-purple-50 border-b border-purple-100 flex items-center gap-2">
-                            <Globe className="w-5 h-5 text-purple-600" />
+                            <GlobeIcon className="w-5 h-5 text-purple-600" />
                             <h2 className="font-bold text-purple-900 text-[12pt] sm:text-[15pt]">Site Configuration</h2>
                         </div>
                         <div className="p-3 space-y-4">
@@ -70,7 +117,7 @@ export default async function SettingsPage() {
                 {/* Courses */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <div className="p-3 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
-                        <MapPin className="w-5 h-5 text-gray-700" />
+                        <MapPinIcon className="w-5 h-5 text-gray-700" />
                         <h2 className="font-bold text-gray-900 text-[12pt] sm:text-[15pt]">Courses</h2>
                     </div>
                     <div className="p-3 space-y-4">
@@ -78,10 +125,10 @@ export default async function SettingsPage() {
                             <div key={course.id} className="border border-gray-200 rounded-lg p-3 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
                                 <h3 className="font-bold text-[12pt] sm:text-[15pt]">{course.name}</h3>
                                 <div className="flex items-center gap-2 w-full md:w-auto">
-                                    <Link href={`/settings/course/${course.id}`} className="flex-1 md:flex-none bg-black text-white px-8 py-2 rounded-full font-bold text-[12pt] sm:text-[15pt] text-center hover:bg-gray-800 transition-colors">
+                                    <Link href={`/settings/course/${course.id}`} className="flex-1 md:flex-none bg-black text-white px-8 py-2 rounded-full font-bold text-[12pt] sm:text-[15pt] text-center hover:bg-gray-800 transition-colors active:scale-95">
                                         View
                                     </Link>
-                                    <Link href={`/settings/course/${course.id}/edit`} className="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-lg font-bold text-[12pt] sm:text-[15pt] hover:bg-gray-50 transition-colors shadow-sm">
+                                    <Link href={`/settings/course/${course.id}/edit`} className="bg-white border border-gray-200 text-gray-700 px-6 py-2 rounded-full font-bold text-[12pt] sm:text-[15pt] hover:bg-gray-50 transition-colors shadow-sm active:scale-95">
                                         Edit
                                     </Link>
                                 </div>
@@ -96,7 +143,7 @@ export default async function SettingsPage() {
                 {/* Backup & Restore */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <div className="p-3 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
-                        <Database className="w-5 h-5 text-gray-700" />
+                        <DatabaseIcon className="w-5 h-5 text-gray-700" />
                         <h2 className="font-bold text-gray-900 text-[12pt] sm:text-[15pt]">Data Backup & Restore</h2>
                     </div>
                     <div className="p-3">
@@ -111,5 +158,3 @@ export default async function SettingsPage() {
         </div>
     );
 }
-
-

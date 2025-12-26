@@ -59,24 +59,24 @@ export default function AppHeader() {
 
     return (
         <>
-            <div className="bg-black text-white py-2 flex justify-between items-center sticky top-0 z-[100] text-2xl mx-3 rounded-lg mt-2">
+            <div className="bg-black text-white py-1 flex justify-between items-center sticky top-0 z-[100] mx-3 rounded-full mt-2 shadow-xl border border-white/10">
                 <div className="flex items-center gap-2 px-3">
                     <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
-                        <span role="img" aria-label="golf">⛳</span>
-                        <span className="font-bold tracking-wide">Golf Club Management</span>
+                        <span role="img" aria-label="golf" className="text-xl">⛳</span>
+                        <span className="font-bold tracking-tight text-[12pt] sm:text-[15pt]">City Park Golf Club</span>
                     </Link>
                 </div>
 
                 <div className="flex items-center gap-4 px-3">
                     {isAdmin ? (
                         <div className="flex items-center gap-3">
-                            <span className="text-green-400 font-bold flex items-center gap-1 text-xs uppercase tracking-wider">
+                            <span className="text-green-400 font-bold flex items-center gap-1 text-[10pt] uppercase tracking-wider">
                                 <ShieldIcon className="w-4 h-4" />
-                                Admin Mode
+                                Admin
                             </span>
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 text-white px-3 py-1 rounded-full text-xs transition-colors"
+                                className="flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-1.5 rounded-full text-[10pt] font-bold transition-colors"
                             >
                                 <LogOutIcon className="w-3 h-3" />
                                 Logout
@@ -85,10 +85,10 @@ export default function AppHeader() {
                     ) : (
                         <button
                             onClick={handleLoginClick}
-                            className="flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 text-white px-3 py-1 rounded-full text-xs transition-colors"
+                            className="flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-1.5 rounded-full text-[10pt] font-bold transition-colors"
                         >
                             <LogInIcon className="w-3 h-3" />
-                            Admin Login
+                            Login
                         </button>
                     )}
                 </div>
@@ -107,8 +107,8 @@ export default function AppHeader() {
                                     autoFocus
                                     value={passwordInput}
                                     onChange={(e) => setPasswordInput(e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black border p-2"
-                                    placeholder="Enter password (cpgc-V)"
+                                    className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-black focus:ring-black border p-2 text-[12pt] sm:text-[15pt]"
+                                    placeholder="Enter password"
                                 />
                             </div>
                             <div className="flex justify-end gap-2">

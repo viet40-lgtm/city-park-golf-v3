@@ -313,17 +313,17 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                     <div className="flex gap-2">
                         <button
                             onClick={handleCopyMembers}
-                            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-full text-[12pt] sm:text-[15pt] font-bold hover:bg-green-700 transition-all shadow-md active:scale-95"
+                            className="flex items-center justify-center p-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all shadow-md active:scale-95"
+                            title="Copy Member List"
                         >
                             <Copy size={20} />
-                            <span>Copy</span>
                         </button>
                         <button
                             onClick={handleCopyEmails}
-                            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full text-[12pt] sm:text-[15pt] font-bold hover:bg-blue-700 transition-all shadow-md active:scale-95"
+                            className="flex items-center justify-center p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all shadow-md active:scale-95"
+                            title="Copy Emails"
                         >
                             <Mail size={20} />
-                            <span>Email</span>
                         </button>
                     </div>
                 </div>

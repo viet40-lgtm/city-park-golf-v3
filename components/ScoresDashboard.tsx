@@ -426,14 +426,14 @@ export default function ScoresDashboard({
                                         <>
                                             <button
                                                 onClick={() => handleCopyRound(round)}
-                                                className="p-2 text-black hover:text-slate-600 hover:bg-slate-50 rounded-lg border border-slate-200 transition-all shadow-sm flex items-center justify-center"
+                                                className="p-2 text-black hover:text-slate-600 hover:bg-slate-50 rounded-full border border-slate-200 transition-all shadow-sm flex items-center justify-center"
                                                 title="Copy to Email"
                                             >
                                                 <CopyIcon className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => handleCopyEmails(round)}
-                                                className="p-2 text-black hover:text-slate-600 hover:bg-slate-50 rounded-lg border border-slate-200 transition-all shadow-sm flex items-center justify-center"
+                                                className="p-2 text-black hover:text-slate-600 hover:bg-slate-50 rounded-full border border-slate-200 transition-all shadow-sm flex items-center justify-center"
                                                 title="Copy Emails"
                                             >
                                                 <MailIcon className="w-4 h-4" />
@@ -629,7 +629,7 @@ export default function ScoresDashboard({
                     <div className="flex justify-center pt-4">
                         <button
                             onClick={loadMore}
-                            className="bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 font-bold px-6 py-3 rounded-lg shadow-sm transition-colors"
+                            className="bg-black text-white px-8 py-2 rounded-full font-bold text-[12pt] sm:text-[15pt] hover:bg-gray-800 transition-all shadow-md active:scale-95"
                         >
                             More Rounds
                         </button>
