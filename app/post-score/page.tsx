@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { postScore } from '../actions';
 import Link from 'next/link';
+export const dynamic = 'force-dynamic';
 
 export default async function PostScorePage() {
     const players = await prisma.player.findMany({ orderBy: { name: 'asc' } });
