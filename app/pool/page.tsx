@@ -22,91 +22,97 @@ export default async function PoolPage(props: { searchParams: Promise<{ roundId?
     const searchParams = await props.searchParams;
     const selectedRoundId = searchParams.roundId;
 
-    // 1a. Fetch all round dates for selector
-    const allRounds = await prisma.round.findMany({
-        orderBy: { date: 'desc' },
-        select: {
-            date: true,
-            id: true,
-            is_tournament: true,
-            name: true,
-            _count: {
-                select: { players: true }
-            }
-        }
-    });
+    // 1. Initialize Safe Defaults
+    let allRounds: any[] = [];
+    let everyPlayer: any[] = [];
+    let round: any = null;
+    let poolStatusMap = new Map();
 
-    // 1aa. Fetch all available players for the management modal
-    const everyPlayer = await prisma.player.findMany({
-        orderBy: { name: 'asc' },
-        select: { id: true, name: true }
-    });
-
-    // 1b. Fetch Round (Specific ID or Latest)
-    const includeOpts = {
-        course: {
-            include: { holes: true }
-        },
-        players: {
-            include: {
-                player: true,
-                tee_box: true,
-                scores: {
-                    include: { hole: true }
+    try {
+        // 1a. Fetch all round dates for selector
+        allRounds = await prisma.round.findMany({
+            orderBy: { date: 'desc' },
+            select: {
+                date: true,
+                id: true,
+                is_tournament: true,
+                name: true,
+                _count: {
+                    select: { players: true }
                 }
             }
-        }
-    };
-
-    let round = null;
-
-    if (selectedRoundId) {
-        round = await prisma.round.findUnique({
-            where: { id: selectedRoundId },
-            include: includeOpts
         });
-    } else {
-        // Default: Find the latest round that actually has players in the pool
-        // Using raw query to bypass potential Prisma Client validation issues with 'in_pool' caching
-        try {
-            const result = await prisma.$queryRaw<{ id: string }[]>`
-                SELECT r.id
-                FROM rounds r
-                JOIN round_players rp ON r.id = rp.round_id
-                WHERE rp.in_pool = true
-                ORDER BY r.date DESC
-                LIMIT 1
-            `;
 
-            if (result.length > 0) {
-                round = await prisma.round.findUnique({
-                    where: { id: result[0].id },
+        // 1aa. Fetch all available players for the management modal
+        everyPlayer = await prisma.player.findMany({
+            orderBy: { name: 'asc' },
+            select: { id: true, name: true }
+        });
+
+        // 1b. Fetch Round (Specific ID or Latest)
+        const includeOpts = {
+            course: {
+                include: { holes: true }
+            },
+            players: {
+                include: {
+                    player: true,
+                    tee_box: true,
+                    scores: {
+                        include: { hole: true }
+                    }
+                }
+            }
+        };
+
+        if (selectedRoundId) {
+            round = await prisma.round.findUnique({
+                where: { id: selectedRoundId },
+                include: includeOpts
+            });
+        } else {
+            // Default: Find the latest round that actually has players in the pool
+            // Using raw query to bypass potential Prisma Client validation issues with 'in_pool' caching
+            try {
+                const result = await prisma.$queryRaw<{ id: string }[]>`
+                    SELECT r.id
+                    FROM rounds r
+                    JOIN round_players rp ON r.id = rp.round_id
+                    WHERE rp.in_pool = true
+                    ORDER BY r.date DESC
+                    LIMIT 1
+                `;
+
+                if (result.length > 0) {
+                    round = await prisma.round.findUnique({
+                        where: { id: result[0].id },
+                        include: includeOpts
+                    });
+                }
+            } catch (e) {
+                console.error("Error finding pool round via raw query:", e);
+            }
+
+            // Fallback: If no pool rounds exist yet, just show the latest round
+            if (!round) {
+                round = await prisma.round.findFirst({
+                    orderBy: { date: 'desc' },
                     include: includeOpts
                 });
             }
-        } catch (e) {
-            console.error("Error finding pool round via raw query:", e);
         }
 
-        // Fallback: If no pool rounds exist yet, just show the latest round
-        if (!round) {
-            round = await prisma.round.findFirst({
-                orderBy: { date: 'desc' },
-                include: includeOpts
-            });
+        // 1c. Fetch in_pool status via Raw SQL (to bypass potential stale Prisma Client cache)
+        if (round) {
+            const poolStatusRaw = await prisma.$queryRaw<{ player_id: string, in_pool: boolean }[]>`
+                SELECT player_id, in_pool FROM round_players WHERE round_id = ${round.id}
+            `;
+            poolStatusMap = new Map(poolStatusRaw.map((p: any) => [p.player_id, Boolean(p.in_pool)]));
         }
+
+    } catch (e) {
+        console.error("Failed to fetch pool data:", e);
     }
-
-
-    if (!round) {
-        return <div className="p-8 text-center text-gray-500">No rounds found for the pool.</div>;
-    }
-
-    // 1c. Fetch in_pool status via Raw SQL (to bypass potential stale Prisma Client cache)
-    const poolStatusRaw = await prisma.$queryRaw<{ player_id: string, in_pool: boolean }[]>`
-        SELECT player_id, in_pool FROM round_players WHERE round_id = ${round.id}
-    `;
-    const poolStatusMap = new Map(poolStatusRaw.map((p: any) => [p.player_id, Boolean(p.in_pool)]));
 
     // 2. Setup Calculations
     const playersRaw = round.players as any[];
