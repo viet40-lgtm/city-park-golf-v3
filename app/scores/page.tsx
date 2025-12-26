@@ -147,9 +147,9 @@ export default async function ScoresPage() {
             <header className="bg-white shadow-sm sticky top-0 z-10 px-3 py-3">
                 <div className="relative flex items-center justify-center p-1">
                     <div className="absolute left-0">
-                        <Link href="/" className="px-4 py-2 bg-black text-white rounded-full text-[16pt] font-bold hover:bg-gray-800 transition-colors">Back</Link>
+                        <Link href="/" className="px-4 py-2 bg-black text-white rounded-full text-[12pt] sm:text-[16pt] font-bold hover:bg-gray-800 transition-colors">Back</Link>
                     </div>
-                    <h1 className="text-[18pt] font-bold text-green-700 tracking-tight">Scores</h1>
+                    <h1 className="text-[14pt] sm:text-[18pt] font-bold text-green-700 tracking-tight">Scores</h1>
                 </div>
             </header>
 
@@ -166,7 +166,7 @@ export default async function ScoresPage() {
                 {/* Action Bar */}
                 <div className="flex justify-between items-center">
                     <CreateRoundButton />
-                    <button className="text-[16pt] font-bold text-gray-500 hover:text-black transition-colors">
+                    <button className="text-[12pt] sm:text-[16pt] font-bold text-gray-500 hover:text-black transition-colors">
                         Refresh
                     </button>
                 </div>
