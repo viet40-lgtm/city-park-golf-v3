@@ -65,21 +65,18 @@ const NineHoleSection = ({
                     <tbody>
                         {/* Header Row (Hole #) */}
                         <tr className="border-b border-gray-100">
-                            <td className="px-3 py-2 text-[16pt] font-bold text-gray-400 uppercase text-left w-16">Hole</td>
                             {holes.map(h => (
                                 <td key={h.id} className="px-3 py-2 w-10 font-bold text-[16pt] text-black">{h.hole_number}</td>
                             ))}
                         </tr>
                         {/* Par Row */}
                         <tr className="border-b border-gray-100">
-                            <td className="px-3 py-2 text-[16pt] font-bold text-gray-400 uppercase text-left">Par</td>
                             {holes.map(h => (
                                 <td key={h.id} className="px-3 py-2 w-10 text-[16pt] text-gray-500">{h.par}</td>
                             ))}
                         </tr>
                         {/* Score Row */}
                         <tr className="border-b border-gray-100">
-                            <td className="px-3 py-2 text-[16pt] font-bold text-black uppercase text-left">Score</td>
                             {holes.map((h, idx) => {
                                 const scoreIdx = startIdx + idx;
                                 const score = scores[scoreIdx];
@@ -114,7 +111,6 @@ const NineHoleSection = ({
                         </tr>
                         {/* Hardness Row */}
                         <tr>
-                            <td className="px-3 py-2 text-[16pt] font-bold text-gray-400 uppercase text-left">Hardness</td>
                             {holes.map(h => (
                                 <td key={h.id} className="px-3 py-2 w-10 text-[16pt] text-gray-400">{h.difficulty || '-'}</td>
                             ))}
@@ -124,10 +120,28 @@ const NineHoleSection = ({
             </div>
 
             {/* Fixed Total Column */}
-            <div className="w-20 bg-gray-100 border-l border-gray-200 flex flex-col justify-center items-center shrink-0">
-                <span className="text-[16pt] font-bold text-gray-500 uppercase mb-1">{totalLabel}</span>
-                <span className="text-xl font-black text-black">{totalScore || '-'}</span>
-                <span className="text-[16pt] text-gray-400 mt-1">Par {totalPar}</span>
+            {/* Fixed Total Column */}
+            <div className="w-16 bg-gray-100 border-l border-gray-200 shrink-0">
+                <table className="w-full text-center border-collapse">
+                    <tbody>
+                        {/* Row 1: Header (Empty) */}
+                        <tr className="border-b border-gray-100">
+                            <td className="px-1 py-2 text-[16pt] font-bold text-transparent">&nbsp;</td>
+                        </tr>
+                        {/* Row 2: Total Par */}
+                        <tr className="border-b border-gray-100">
+                            <td className="px-1 py-2 text-[16pt] font-bold text-gray-400">{totalPar}</td>
+                        </tr>
+                        {/* Row 3: Total Score */}
+                        <tr className="border-b border-gray-100">
+                            <td className="px-1 py-2 text-[16pt] font-black text-black">{totalScore || '-'}</td>
+                        </tr>
+                        {/* Row 4: Hardness (Empty) */}
+                        <tr>
+                            <td className="px-1 py-2 text-[16pt] text-transparent">&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -289,23 +303,7 @@ export default function ScoreEntryModal({
                             <h2 className="text-3xl font-black text-black tracking-tight">{playerName}</h2>
                         </div>
 
-                        {/* Big Stats Row */}
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 mb-8 flex justify-around items-center text-center">
-                            <div>
-                                <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Gross</span>
-                                <span className="text-3xl sm:text-4xl font-black text-black">{grossTotal || '-'}</span>
-                            </div>
-                            <div className="w-px h-10 bg-gray-100 mx-2"></div>
-                            <div>
-                                <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Hcp</span>
-                                <span className="text-3xl sm:text-4xl font-black text-black">{courseHcp}</span>
-                            </div>
-                            <div className="w-px h-10 bg-gray-100 mx-2"></div>
-                            <div>
-                                <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Net</span>
-                                <span className="text-3xl sm:text-4xl font-black text-black">{netScore || '-'}</span>
-                            </div>
-                        </div>
+                        {/* Big Stats Row moved to bottom */}
 
                         {/* Front 9 */}
                         <NineHoleSection
@@ -354,6 +352,24 @@ export default function ScoreEntryModal({
                             <div className="flex items-center gap-1.5">
                                 <span className="w-3 h-3 bg-rose-200 border border-rose-300 rounded-sm"></span>
                                 <span className="text-[16pt] font-bold text-gray-500 uppercase">Double+</span>
+                            </div>
+                        </div>
+
+                        {/* Big Stats Row */}
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 mt-8 flex justify-around items-center text-center">
+                            <div>
+                                <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">GRS</span>
+                                <span className="text-3xl sm:text-4xl font-black text-black">{grossTotal || '-'}</span>
+                            </div>
+                            <div className="w-px h-10 bg-gray-100 mx-2"></div>
+                            <div>
+                                <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">HCP</span>
+                                <span className="text-3xl sm:text-4xl font-black text-black">{courseHcp}</span>
+                            </div>
+                            <div className="w-px h-10 bg-gray-100 mx-2"></div>
+                            <div>
+                                <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">NET</span>
+                                <span className="text-3xl sm:text-4xl font-black text-black">{netScore || '-'}</span>
                             </div>
                         </div>
 

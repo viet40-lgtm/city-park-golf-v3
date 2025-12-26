@@ -21,9 +21,10 @@ const LogInIcon = ({ className }: { className?: string }) => (
 );
 import Cookies from 'js-cookie';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function AppHeader() {
+    const router = useRouter(); // Initialize router
     const [isAdmin, setIsAdmin] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [passwordInput, setPasswordInput] = useState('');
@@ -46,6 +47,7 @@ export default function AppHeader() {
             Cookies.set('admin_session', 'true', { expires: 7 });
             setIsAdmin(true);
             setShowLoginModal(false);
+            router.refresh(); // Refresh the page content to reflect admin status
         } else {
             alert('Incorrect Password');
         }
