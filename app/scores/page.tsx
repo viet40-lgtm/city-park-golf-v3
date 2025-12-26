@@ -14,30 +14,35 @@ export default async function ScoresPage() {
 
     const yearStart = format(new Date(new Date().getFullYear(), 0, 1), 'yyyy-MM-dd');
 
-    const rounds = await prisma.round.findMany({
-        orderBy: {
-            date: 'desc',
-        },
-        include: {
-            course: {
-                include: {
-                    holes: true,
+    let rounds: any[] = [];
+    try {
+        rounds = await prisma.round.findMany({
+            orderBy: {
+                date: 'desc',
+            },
+            include: {
+                course: {
+                    include: {
+                        holes: true,
+                    },
+                },
+                players: {
+                    include: {
+                        player: true,
+                        tee_box: true,
+                        scores: {
+                            include: { hole: true }
+                        }
+                    },
+                    orderBy: {
+                        gross_score: 'asc',
+                    },
                 },
             },
-            players: {
-                include: {
-                    player: true,
-                    tee_box: true,
-                    scores: {
-                        include: { hole: true }
-                    }
-                },
-                orderBy: {
-                    gross_score: 'asc',
-                },
-            },
-        },
-    });
+        });
+    } catch (error) {
+        console.error('Failed to fetch rounds:', error);
+    }
 
     // Build YTD winnings and points as a RUNNING TOTAL progression
     const runningWinnings = new Map<string, number>();
