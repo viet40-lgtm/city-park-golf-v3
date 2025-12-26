@@ -32,8 +32,8 @@ export default function Home() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-3 pb-10">
 
         {/* Hero Text */}
-        <div className="mb-12 space-y-4">
-          <h1 className="text-[50pt] font-extrabold text-white drop-shadow-xl tracking-tight leading-tight">
+        <div className="mb-12 space-y-4 max-w-4xl">
+          <h1 className="text-[32pt] sm:text-[50pt] font-extrabold text-white drop-shadow-xl tracking-tight leading-[1.1] sm:leading-tight">
             <span className="relative inline-block">
               C
               <span className="absolute bottom-1 left-0 w-full h-[3px] sm:h-[5px] bg-red-600 rounded-sm"></span>
@@ -56,11 +56,11 @@ export default function Home() {
             lub{" "}
             of New Orleans
           </h1>
-          <div className="flex flex-col gap-1 text-shadow-md">
-            <p className="text-white text-[18pt] font-semibold drop-shadow-md">
+          <div className="flex flex-col gap-1 text-shadow-md px-4 sm:px-0">
+            <p className="text-white text-[14pt] sm:text-[18pt] font-semibold drop-shadow-md leading-relaxed">
               Teeing off sunrise every Saturday at Bayou Oaks City Park Golf North Course.
             </p>
-            <p className="text-white/80 text-[18pt] mt-1 drop-shadow-sm font-medium">
+            <p className="text-white/80 text-[14pt] sm:text-[18pt] mt-1 drop-shadow-sm font-medium">
               1040 Filmore Ave, New Orleans, LA 70124.
             </p>
           </div>
@@ -77,14 +77,14 @@ export default function Home() {
                 className="bg-white rounded-xl shadow-lg p-4 flex flex-col items-center justify-center gap-3 hover:scale-105 transition-transform duration-200 w-[140px] h-[100px]"
               >
                 <Icon className={`w-8 h-8 ${item.color}`} />
-                <span className="text-gray-900 font-bold text-[14pt] whitespace-nowrap">{item.name}</span>
+                <span className="text-gray-900 font-bold text-[12pt] sm:text-[14pt] whitespace-nowrap">{item.name}</span>
               </Link>
             )
           })}
         </div>
 
         {/* Footer Info */}
-        <div className="mt-16 text-white/60 text-[14pt] space-y-1">
+        <div className="mt-16 text-white/60 text-[12pt] sm:text-[14pt] space-y-1">
           <p className="font-bold text-white">CPGC.app</p>
           <p>Last updated: December 23, 2025</p>
           <p>100% Custom app by: Vchu.app</p>
