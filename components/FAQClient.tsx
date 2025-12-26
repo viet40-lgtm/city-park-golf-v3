@@ -672,34 +672,39 @@ export default function FAQClient({ players }: { players: Player[] }) {
     );
 
     return (
-        <main className="max-w-7xl mx-auto px-4 py-8">
-            <div className="relative flex items-center justify-center mb-10 sticky top-0 bg-white z-50 py-4 px-1 shadow-sm">
-                <div className="absolute left-0">
-                    <Link href="/" className="bg-black text-white px-4 py-2 rounded-full font-bold text-[18pt] hover:bg-gray-800 transition-all shadow-md">Back</Link>
+        <>
+            <header className="bg-white sticky top-0 z-50 py-4 shadow-md px-4 border-b border-gray-100">
+                <div className="max-w-7xl mx-auto relative flex items-center justify-center">
+                    <div className="absolute left-0">
+                        <Link href="/" className="bg-black text-white px-4 py-2 rounded-full font-bold text-[18pt] hover:bg-gray-800 transition-all shadow-md">Back</Link>
+                    </div>
+                    <h1 className="text-[18pt] font-black text-[#22c55e] tracking-tighter uppercase">FAQ</h1>
                 </div>
-                <h1 className="text-[18pt] font-black text-[#22c55e] tracking-tighter uppercase">FAQ</h1>
-            </div>
+            </header>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-16 px-1">
-                <button onClick={() => openModal('App Logic & Rules', appLogicContent)} className="col-span-1 sm:col-span-2 bg-blue-900 text-white py-2 px-6 rounded-full font-black text-[12pt] sm:text-[15pt] shadow-lg hover:bg-blue-800 transition-all active:scale-95 border-b-2 border-blue-600 flex items-center justify-center gap-2">
-                    <span className="text-xl">📘</span> App Logic & Rules
-                </button>
-                <button onClick={() => openModal('Club Rules', clubRules)} className="bg-gray-900 text-white py-2 px-6 rounded-full font-black text-[12pt] sm:text-[15pt] shadow-lg hover:bg-black transition-all active:scale-95 border-b-2 border-gray-700">Club Rules</button>
-                <button onClick={() => openModal('Round Rules', roundRules)} className="bg-gray-900 text-white py-2 px-6 rounded-full font-black text-[12pt] sm:text-[15pt] shadow-lg hover:bg-black transition-all active:scale-95 border-b-2 border-green-600">Round Rules</button>
-                <button onClick={() => openModal('Handicap Rules', handicapRules)} className="bg-gray-900 text-white py-2 px-6 rounded-full font-black text-[12pt] sm:text-[15pt] shadow-lg hover:bg-black transition-all active:scale-95 border-b-2 border-gray-700">Handicap Rules</button>
-                <Link href="#" className="bg-gray-900 text-white py-2 px-6 rounded-full font-black text-center text-[12pt] sm:text-[15pt] shadow-lg hover:bg-black transition-all active:scale-95 flex items-center justify-center border-b-2 border-gray-700">Download Member App</Link>
-            </div>
+            <main className="max-w-7xl mx-auto px-4 py-8">
 
-            <div className="border-t border-gray-200"></div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-16 px-1">
+                    <button onClick={() => openModal('App Logic & Rules', appLogicContent)} className="col-span-1 sm:col-span-2 bg-blue-900 text-white py-2 px-6 rounded-full font-black text-[12pt] sm:text-[15pt] shadow-lg hover:bg-blue-800 transition-all active:scale-95 border-b-2 border-blue-600 flex items-center justify-center gap-2">
+                        <span className="text-xl">📘</span> App Logic & Rules
+                    </button>
+                    <button onClick={() => openModal('Club Rules', clubRules)} className="bg-gray-900 text-white py-2 px-6 rounded-full font-black text-[12pt] sm:text-[15pt] shadow-lg hover:bg-black transition-all active:scale-95 border-b-2 border-gray-700">Club Rules</button>
+                    <button onClick={() => openModal('Round Rules', roundRules)} className="bg-gray-900 text-white py-2 px-6 rounded-full font-black text-[12pt] sm:text-[15pt] shadow-lg hover:bg-black transition-all active:scale-95 border-b-2 border-green-600">Round Rules</button>
+                    <button onClick={() => openModal('Handicap Rules', handicapRules)} className="bg-gray-900 text-white py-2 px-6 rounded-full font-black text-[12pt] sm:text-[15pt] shadow-lg hover:bg-black transition-all active:scale-95 border-b-2 border-gray-700">Handicap Rules</button>
+                    <Link href="#" className="bg-gray-900 text-white py-2 px-6 rounded-full font-black text-center text-[12pt] sm:text-[15pt] shadow-lg hover:bg-black transition-all active:scale-95 flex items-center justify-center border-b-2 border-gray-700">Download Member App</Link>
+                </div>
 
-            <CourseCalculator players={players} />
+                <div className="border-t border-gray-200"></div>
 
-            <RulesModal
-                isOpen={modalData.open}
-                onClose={() => setModalData({ ...modalData, open: false })}
-                title={modalData.title}
-                content={modalData.content}
-            />
-        </main>
+                <CourseCalculator players={players} />
+
+                <RulesModal
+                    isOpen={modalData.open}
+                    onClose={() => setModalData({ ...modalData, open: false })}
+                    title={modalData.title}
+                    content={modalData.content}
+                />
+            </main>
+        </>
     );
 }

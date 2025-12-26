@@ -333,10 +333,9 @@ export default async function PoolPage(props: { searchParams: Promise<{ roundId?
 
     return (
         <div className="min-h-screen bg-white font-sans text-[#111]">
-            <main className="px-3 py-6 w-full">
-
-                {/* Header Actions */}
-                <div className="relative flex items-center justify-center mb-6 min-h-[50px] sticky top-0 bg-white z-50 py-4 shadow-sm">
+            {/* Header Actions */}
+            <header className="bg-white sticky top-0 z-50 py-4 shadow-md px-3 border-b border-gray-100">
+                <div className="relative flex items-center justify-center min-h-[40px]">
                     <div className="absolute left-0">
                         <Link href="/" className="px-4 py-2 bg-black text-white rounded-full text-[18pt] font-bold hover:bg-gray-800 transition-colors shadow-sm">
                             Back
@@ -344,6 +343,9 @@ export default async function PoolPage(props: { searchParams: Promise<{ roundId?
                     </div>
                     <h1 className="text-[18pt] font-black text-green-600 tracking-tight">$5 Pool</h1>
                 </div>
+            </header>
+
+            <main className="px-3 py-6 w-full">
 
                 {/* Date Selection Bar */}
                 <div className="bg-gray-50 border border-gray-200 rounded-xl p-3 flex items-center gap-3 mb-6 shadow-sm">
