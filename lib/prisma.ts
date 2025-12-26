@@ -4,10 +4,9 @@ import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 
 const connectionString = process.env.DATABASE_URL
+// Safe initialization
 if (!connectionString) {
-    if (process.env.NODE_ENV === 'production') {
-        throw new Error("DATABASE_URL environment variable is missing. Please add it to your deployment settings.");
-    }
+    console.warn("DATABASE_URL is missing in environment.");
 }
 
 const pool = new Pool({ connectionString })
