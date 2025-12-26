@@ -163,13 +163,15 @@ export default async function ScoresPage() {
                         <p className="mt-2 text-xs text-gray-500">Please check Vercel Environment Variables.</p>
                     </div>
                 )}
-                {/* Action Bar */}
-                <div className="flex justify-between items-center">
-                    <CreateRoundButton />
-                    <button className="text-[12pt] sm:text-[15pt] font-bold text-gray-500 hover:text-black transition-colors">
-                        Refresh
-                    </button>
-                </div>
+                {/* Action Bar - Admin Only */}
+                {isAdmin && (
+                    <div className="flex justify-between items-center">
+                        <CreateRoundButton />
+                        <button className="text-[12pt] sm:text-[15pt] font-bold text-gray-500 hover:text-black transition-colors">
+                            Refresh
+                        </button>
+                    </div>
+                )}
 
                 {/* Rounds Feed with Pagination */}
                 <ScoresDashboard rounds={processedRounds as any} isAdmin={isAdmin} />

@@ -86,7 +86,12 @@ export function ScorecardModal({ data, isOpen, onClose }: ScorecardModalProps) {
 
     // Handicap Calcs
     const slope = tee_box?.slope || 113;
-    const courseHcp = Math.round((data.index_at_time || 0) * (slope / 113));
+    const par = course.holes.reduce((sum, h) => sum + h.par, 0);
+    const rating = tee_box?.rating || par;
+    const idx = data.index_at_time ?? data.player.index ?? 0;
+
+    // Match the logic from scores/page.tsx: (Index * Slope / 113) + (Rating - Par)
+    const courseHcp = Math.round(idx * (slope / 113) + (rating - par));
     const netScore = (totalScore || 0) - courseHcp;
 
     // Helper for background colors
@@ -124,21 +129,18 @@ export function ScorecardModal({ data, isOpen, onClose }: ScorecardModalProps) {
                         <tbody>
                             {/* Header Row (Hole #) */}
                             <tr className="border-b border-gray-100">
-                                <td className="px-3 py-2 text-[12pt] sm:text-[15pt] font-bold text-gray-400 uppercase text-left w-16">Hole</td>
                                 {holes.map(h => (
                                     <td key={h.id} className="px-3 py-2 w-10 font-bold text-[12pt] sm:text-[15pt] text-black">{h.hole_number}</td>
                                 ))}
                             </tr>
                             {/* Par Row */}
                             <tr className="border-b border-gray-100">
-                                <td className="px-3 py-2 text-[12pt] sm:text-[15pt] font-bold text-gray-400 uppercase text-left">Par</td>
                                 {holes.map(h => (
                                     <td key={h.id} className="px-3 py-2 w-10 text-[12pt] sm:text-[15pt] text-gray-500">{h.par}</td>
                                 ))}
                             </tr>
                             {/* Score Row */}
                             <tr className="border-b border-gray-100">
-                                <td className="px-3 py-2 text-[12pt] sm:text-[15pt] font-bold text-black uppercase text-left">Score</td>
                                 {holes.map(h => {
                                     const score = scoreMap.get(h.hole_number);
                                     return (
@@ -150,7 +152,6 @@ export function ScorecardModal({ data, isOpen, onClose }: ScorecardModalProps) {
                             </tr>
                             {/* Difficulty Row */}
                             <tr>
-                                <td className="px-3 py-2 text-[12pt] sm:text-[15pt] font-bold text-gray-400 uppercase text-left">Hardness</td>
                                 {holes.map(h => (
                                     <td key={h.id} className="px-3 py-2 w-10 text-[12pt] sm:text-[15pt] text-gray-400">{h.difficulty || '-'}</td>
                                 ))}
@@ -160,10 +161,28 @@ export function ScorecardModal({ data, isOpen, onClose }: ScorecardModalProps) {
                 </div>
 
                 {/* Fixed Total Column */}
-                <div className="w-20 bg-gray-100 border-l border-gray-200 flex flex-col justify-center items-center shrink-0">
-                    <span className="text-[12pt] sm:text-[15pt] font-bold text-gray-500 uppercase mb-1">{totalLabel}</span>
-                    <span className="text-[12pt] sm:text-[15pt] font-black text-black">{totalScore || '-'}</span>
-                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 mt-1">Par {totalPar}</span>
+                {/* Fixed Total Column - As a matching table for alignment */}
+                <div className="w-16 bg-gray-100 border-l border-gray-200 shrink-0">
+                    <table className="w-full text-center border-collapse">
+                        <tbody>
+                            {/* Row 1: Header (Empty) */}
+                            <tr className="border-b border-gray-100">
+                                <td className="px-1 py-2 text-[12pt] sm:text-[15pt] font-bold text-transparent">&nbsp;</td>
+                            </tr>
+                            {/* Row 2: Total Par */}
+                            <tr className="border-b border-gray-100">
+                                <td className="px-1 py-2 text-[12pt] sm:text-[15pt] font-bold text-gray-500">{totalPar}</td>
+                            </tr>
+                            {/* Row 3: Total Score */}
+                            <tr className="border-b border-gray-100">
+                                <td className="px-1 py-2 text-[12pt] sm:text-[15pt] font-black text-black">{totalScore || '-'}</td>
+                            </tr>
+                            {/* Row 4: Hardness (Empty) */}
+                            <tr>
+                                <td className="px-1 py-2 text-[12pt] sm:text-[15pt] text-transparent">&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -200,23 +219,7 @@ export function ScorecardModal({ data, isOpen, onClose }: ScorecardModalProps) {
                         </div>
                     </div>
 
-                    {/* Big Stats Row */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 mb-8 flex justify-around items-center text-center">
-                        <div>
-                            <span className="text-[12pt] sm:text-[15pt] font-bold text-gray-400 uppercase tracking-wider block mb-1">Gross Score</span>
-                            <span className="text-[12pt] sm:text-[15pt] font-black text-black">{totalScore || '-'}</span>
-                        </div>
-                        <div className="w-px h-10 bg-gray-100 mx-2"></div>
-                        <div>
-                            <span className="text-[12pt] sm:text-[15pt] font-bold text-gray-400 uppercase tracking-wider block mb-1">Course Hcp</span>
-                            <span className="text-[12pt] sm:text-[15pt] font-black text-black">{courseHcp}</span>
-                        </div>
-                        <div className="w-px h-10 bg-gray-100 mx-2"></div>
-                        <div>
-                            <span className="text-[12pt] sm:text-[15pt] font-bold text-gray-400 uppercase tracking-wider block mb-1">Net Score</span>
-                            <span className="text-[12pt] sm:text-[15pt] font-black text-black">{netScore || '-'}</span>
-                        </div>
-                    </div>
+                    {/* Big Stats Row moved to bottom */}
 
                     {/* Front 9 */}
                     <NineHoleSection
@@ -235,6 +238,8 @@ export function ScorecardModal({ data, isOpen, onClose }: ScorecardModalProps) {
                         totalPar={back9Par}
                         totalScore={back9Score}
                     />
+
+                    {/* Big Stats Row moved to bottom */}
 
                     {/* Legend */}
                     <div className="flex flex-wrap justify-center gap-3 mt-8">
@@ -257,6 +262,24 @@ export function ScorecardModal({ data, isOpen, onClose }: ScorecardModalProps) {
                         <div className="flex items-center gap-1.5">
                             <span className="w-3 h-3 bg-rose-200 border border-rose-300 rounded-sm"></span>
                             <span className="text-[12pt] sm:text-[15pt] font-bold text-gray-500 uppercase">Double+</span>
+                        </div>
+                    </div>
+
+                    {/* Big Stats Row */}
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 mt-8 flex justify-around items-center text-center">
+                        <div>
+                            <span className="text-[12pt] sm:text-[15pt] font-bold text-gray-400 uppercase tracking-wider block mb-1">GRS</span>
+                            <span className="text-[12pt] sm:text-[15pt] font-black text-black">{totalScore || '-'}</span>
+                        </div>
+                        <div className="w-px h-10 bg-gray-100 mx-2"></div>
+                        <div>
+                            <span className="text-[12pt] sm:text-[15pt] font-bold text-gray-400 uppercase tracking-wider block mb-1">HCP</span>
+                            <span className="text-[12pt] sm:text-[15pt] font-black text-black">{courseHcp}</span>
+                        </div>
+                        <div className="w-px h-10 bg-gray-100 mx-2"></div>
+                        <div>
+                            <span className="text-[12pt] sm:text-[15pt] font-bold text-gray-400 uppercase tracking-wider block mb-1">NET</span>
+                            <span className="text-[12pt] sm:text-[15pt] font-black text-black">{netScore || '-'}</span>
                         </div>
                     </div>
 
