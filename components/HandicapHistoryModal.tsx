@@ -134,7 +134,7 @@ export function HandicapHistoryModal({ playerId, isOpen, onClose }: HandicapHist
                         <X size={20} />
                     </button>
                     <div className="flex items-center gap-2">
-                        <h2 className="text-[24pt] font-bold text-gray-900">{data?.player.name || 'Loading...'}</h2>
+                        <h2 className="text-[12pt] sm:text-[15pt] font-bold text-gray-900">{data?.player.name || 'Loading...'}</h2>
                         <button
                             onClick={handleCopyFullHistory}
                             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -150,21 +150,21 @@ export function HandicapHistoryModal({ playerId, isOpen, onClose }: HandicapHist
                     {loading ? (
                         <div className="flex flex-col items-center justify-center h-64 space-y-4">
                             <Loader2 className="w-8 h-8 animate-spin text-green-600" />
-                            <p className="text-[14pt] text-gray-400 font-medium">Calculating Handicap History...</p>
+                            <p className="text-[12pt] sm:text-[15pt] text-gray-400 font-medium">Calculating Handicap History...</p>
                         </div>
                     ) : (data && (
                         <div className="space-y-6">
 
                             {/* Official Handicap Card */}
                             <div className="bg-gray-100 border border-gray-200 rounded-lg p-6 text-center shadow-sm">
-                                <h3 className="font-bold text-gray-900 text-[14pt] mb-2">Official Handicap (From Database)</h3>
-                                <div className="text-[14pt] font-bold text-gray-800 mb-6">
-                                    Handicap Index: <span className="text-black text-[14pt]">{data.player.currentIndex.toFixed(1)}</span>
+                                <h3 className="font-bold text-gray-900 text-[12pt] sm:text-[15pt] mb-2">Official Handicap (From Database)</h3>
+                                <div className="text-[12pt] sm:text-[15pt] font-bold text-gray-800 mb-6">
+                                    Handicap Index: <span className="text-black text-[12pt] sm:text-[15pt]">{data.player.currentIndex.toFixed(1)}</span>
                                 </div>
 
                                 <div className="border-t border-gray-200 pt-4">
-                                    <p className="font-bold text-gray-700 mb-2 text-[14pt]">Course Handicap (City Park North, Par {data.courseData.par}):</p>
-                                    <div className="flex flex-col gap-1 items-center justify-center text-[14pt]">
+                                    <p className="font-bold text-gray-700 mb-2 text-[12pt] sm:text-[15pt]">Course Handicap (City Park North, Par {data.courseData.par}):</p>
+                                    <div className="flex flex-col gap-1 items-center justify-center text-[12pt] sm:text-[15pt]">
                                         {data.courseData.tees
                                             .filter(t => ['White', 'Gold'].includes(t.name)) // Show specific tees if available preferred
                                             .length === 0 ? (
@@ -183,7 +183,7 @@ export function HandicapHistoryModal({ playerId, isOpen, onClose }: HandicapHist
                             </div>
 
                             {/* Recent Scoring Record Header */}
-                            <h3 className="font-bold text-gray-900 text-[14pt]">Recent Scoring Record</h3>
+                            <h3 className="font-bold text-gray-900 text-[12pt] sm:text-[15pt]">Recent Scoring Record</h3>
 
                             {/* List */}
                             <div className="space-y-3">
@@ -202,14 +202,14 @@ export function HandicapHistoryModal({ playerId, isOpen, onClose }: HandicapHist
                                             </div>
                                             {/* Diff */}
                                             <div className="text-right">
-                                                <div className="font-bold text-gray-900 text-[14pt] leading-none">
+                                                <div className="font-bold text-gray-900 text-[12pt] sm:text-[15pt] leading-none">
                                                     Diff: {item.differential.toFixed(1)}
                                                 </div>
                                             </div>
                                         </div>
 
                                         {/* Row 2: Details */}
-                                        <div className="text-[14pt] text-gray-500 mb-4 flex flex-col gap-0.5">
+                                        <div className="text-[12pt] sm:text-[15pt] text-gray-500 mb-4 flex flex-col gap-0.5">
                                             {item.gross ? (
                                                 <div>
                                                     Gross: {item.gross} | <span className={item.adjusted && item.adjusted !== item.gross ? "text-red-600 font-bold" : ""}>Adjusted: {item.adjusted || item.gross}</span>
@@ -225,15 +225,15 @@ export function HandicapHistoryModal({ playerId, isOpen, onClose }: HandicapHist
                                         </div>
 
                                         {/* Row 3: Progression (Divider) */}
-                                        < div className="border-t border-gray-100 pt-3 flex justify-between items-center text-[14pt]" >
+                                        < div className="border-t border-gray-100 pt-3 flex justify-between items-center text-[12pt] sm:text-[15pt]" >
 
                                             {/* Handicap (Est) */}
                                             < div className="flex items-center gap-2" >
-                                                <span className="font-bold text-gray-700 text-[14pt]">Handicap ({item.teeColor || 'Est'}):</span>
-                                                <span className="font-mono text-gray-400 text-[14pt] text-right min-w-[50px]">
+                                                <span className="font-bold text-gray-700 text-[12pt] sm:text-[15pt]">Handicap ({item.teeColor || 'Est'}):</span>
+                                                <span className="font-mono text-gray-400 text-[12pt] sm:text-[15pt] text-right min-w-[50px]">
                                                     {calculateCourseHandicap(item.indexBefore, item.slope || 113, item.rating || 72, item.par || 72)}
                                                     {' -> '}
-                                                    <span className={`font-bold text-[14pt] ${calculateCourseHandicap(item.indexAfter, item.slope || 113, item.rating || 72, item.par || 72) >
+                                                    <span className={`font-bold text-[12pt] sm:text-[15pt] ${calculateCourseHandicap(item.indexAfter, item.slope || 113, item.rating || 72, item.par || 72) >
                                                         calculateCourseHandicap(item.indexBefore, item.slope || 113, item.rating || 72, item.par || 72)
                                                         ? 'text-red-600' : 'text-green-600'
                                                         }`}>
@@ -244,11 +244,11 @@ export function HandicapHistoryModal({ playerId, isOpen, onClose }: HandicapHist
 
                                             {/* Index */}
                                             <div className="flex items-center gap-2">
-                                                <span className="font-bold text-gray-700 text-[14pt]">Index:</span>
+                                                <span className="font-bold text-gray-700 text-[12pt] sm:text-[15pt]">Index:</span>
                                                 <div className="flex items-center gap-1">
-                                                    <span className="text-gray-400 text-[14pt]">{item.indexBefore.toFixed(1)}</span>
+                                                    <span className="text-gray-400 text-[12pt] sm:text-[15pt]">{item.indexBefore.toFixed(1)}</span>
                                                     <span className="text-gray-300">→</span>
-                                                    <span className={`font-bold text-[14pt] ${item.indexAfter > item.indexBefore ? 'text-red-600' : 'text-green-600'
+                                                    <span className={`font-bold text-[12pt] sm:text-[15pt] ${item.indexAfter > item.indexBefore ? 'text-red-600' : 'text-green-600'
                                                         }`}>{item.indexAfter.toFixed(1)}</span>
 
                                                     {item.isLowHi && (
@@ -282,7 +282,7 @@ function TeeLine({ tee, index, par }: { tee: { name: string, rating: number, slo
     return (
         <div className="font-medium text-gray-600">
             <span className="text-black font-bold">{tee.name} Tees: {ch}</span>
-            <span className="text-[14pt] text-gray-400 ml-1">
+            <span className="text-[12pt] sm:text-[15pt] text-gray-400 ml-1">
                 (Par {par} | Rating: {tee.rating} | Slope: {tee.slope})
             </span>
         </div>

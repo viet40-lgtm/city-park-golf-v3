@@ -58,10 +58,10 @@ export default function Home() {
             of New Orleans
           </h1>
           <div className="flex flex-col gap-1 text-shadow-md w-full">
-            <p className="text-white text-[14pt] sm:text-[18pt] font-semibold drop-shadow-md leading-relaxed w-full">
+            <p className="text-white text-[12pt] sm:text-[15pt] font-semibold drop-shadow-md leading-relaxed w-full">
               Teeing off sunrise every Saturday at Bayou Oaks City Park Golf North Course.
             </p>
-            <p className="text-white/80 text-[14pt] sm:text-[18pt] mt-1 drop-shadow-sm font-medium w-full">
+            <p className="text-white/80 text-[12pt] sm:text-[15pt] mt-1 drop-shadow-sm font-medium w-full">
               1040 Filmore Ave, New Orleans, LA 70124.
             </p>
           </div>
@@ -78,14 +78,14 @@ export default function Home() {
                 className="bg-white rounded-xl shadow-lg p-2 sm:p-4 flex flex-col items-center justify-center gap-2 hover:scale-105 transition-transform duration-200 sm:w-[140px] h-[85px] sm:h-[100px]"
               >
                 <Icon className={`w-6 h-6 sm:w-8 sm:h-8 ${item.color}`} />
-                <span className="text-gray-900 font-bold text-[10pt] sm:text-[14pt] whitespace-nowrap">{item.name}</span>
+                <span className="text-gray-900 font-bold text-[12pt] sm:text-[15pt] whitespace-nowrap">{item.name}</span>
               </Link>
             )
           })}
         </div>
 
         {/* Footer Info */}
-        <div className="mt-16 text-white/60 text-[12pt] sm:text-[14pt] space-y-1">
+        <div className="mt-16 text-white/60 text-[12pt] sm:text-[15pt] space-y-1">
           <p className="font-bold text-white">CPGC.app</p>
           <p>Last updated: December 23, 2025</p>
           <p>100% Custom app by: Vchu.app</p>

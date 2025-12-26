@@ -308,19 +308,19 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
             {/* Header */}
             <header className="bg-white shadow-sm sticky top-0 z-10 px-3 py-3">
                 <div className="flex items-center justify-between">
-                    <Link href="/" className="px-4 py-2 bg-black text-white rounded-full text-[16pt] font-bold hover:bg-gray-800 transition-colors">Back</Link>
-                    <h1 className="text-[18pt] font-bold text-green-700 tracking-tight">Players</h1>
+                    <Link href="/" className="px-4 py-2 bg-black text-white rounded-full text-[12pt] sm:text-[15pt] font-bold hover:bg-gray-800 transition-colors">Back</Link>
+                    <h1 className="text-[12pt] sm:text-[15pt] font-bold text-green-700 tracking-tight">Players</h1>
                     <div className="flex gap-2">
                         <button
                             onClick={handleCopyMembers}
-                            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-full text-[14pt] font-bold hover:bg-green-700 transition-all shadow-md active:scale-95"
+                            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-full text-[12pt] sm:text-[15pt] font-bold hover:bg-green-700 transition-all shadow-md active:scale-95"
                         >
                             <Copy size={20} />
                             <span>Copy</span>
                         </button>
                         <button
                             onClick={handleCopyEmails}
-                            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full text-[14pt] font-bold hover:bg-blue-700 transition-all shadow-md active:scale-95"
+                            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full text-[12pt] sm:text-[15pt] font-bold hover:bg-blue-700 transition-all shadow-md active:scale-95"
                         >
                             <Mail size={20} />
                             <span>Email</span>
@@ -330,7 +330,7 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
 
                 {/* Search & Sort Bar */}
                 <div className="mt-4 flex items-center gap-2">
-                    <div className="flex gap-4 text-[16pt] font-bold text-gray-500 uppercase tracking-wide items-center overflow-x-auto">
+                    <div className="flex gap-4 text-[12pt] sm:text-[15pt] font-bold text-gray-500 uppercase tracking-wide items-center overflow-x-auto">
                         <span className="shrink-0 text-gray-400">Sort:</span>
                         <SortButton label="Last" sortKey="last_name" />
                         <SortButton label="First" sortKey="first_name" />
@@ -344,7 +344,7 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                             placeholder="Search..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="pl-3 pr-7 py-1 rounded-full border border-gray-300 text-[16pt] focus:outline-none focus:ring-1 focus:ring-green-500 w-32 sm:w-56"
+                            className="pl-3 pr-7 py-1 rounded-full border border-gray-300 text-[12pt] sm:text-[15pt] focus:outline-none focus:ring-1 focus:ring-green-500 w-32 sm:w-56"
                         />
                         <Search className="w-4 h-4 text-gray-400 absolute right-2 top-1.5" />
                     </div>
@@ -363,23 +363,23 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                                 onClick={() => setSelectedPlayer(player)}
                             >
                                 <div className="flex flex-col group-hover:opacity-80 transition-opacity">
-                                    <span className="text-[16pt] font-bold text-blue-600 leading-tight underline decoration-red-500 decoration-2 underline-offset-2">
+                                    <span className="text-[12pt] sm:text-[15pt] font-bold text-blue-600 leading-tight underline decoration-red-500 decoration-2 underline-offset-2">
                                         {player.firstName}
                                     </span>
-                                    <span className="text-[16pt] font-semibold text-black leading-tight">
+                                    <span className="text-[12pt] sm:text-[15pt] font-semibold text-black leading-tight">
                                         {player.lastName}
                                     </span>
                                 </div>
 
                                 <div className="mt-2 space-y-0.5 pointer-events-none">
                                     {player.phone && (
-                                        <div className="flex items-center gap-1.5 text-[16pt] text-gray-500">
+                                        <div className="flex items-center gap-1.5 text-[12pt] sm:text-[15pt] text-gray-500">
                                             <Phone className="w-3 h-3 text-gray-400" />
                                             <span>{player.phone}</span>
                                         </div>
                                     )}
                                     {player.email && (
-                                        <div className="flex items-center gap-1.5 text-[16pt] text-gray-400 truncate max-w-[200px]">
+                                        <div className="flex items-center gap-1.5 text-[12pt] sm:text-[15pt] text-gray-400 truncate max-w-[200px]">
                                             <Mail className="w-3 h-3 text-gray-300" />
                                             <span>{player.email}</span>
                                         </div>
@@ -392,24 +392,24 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
 
                                 {/* HCP (Playing Handicap) */}
                                 <div className="flex flex-col items-center min-w-[30px]">
-                                    <span className="text-[16pt] text-gray-400 uppercase font-bold tracking-wider">HCP</span>
-                                    <span className="font-bold text-[16pt] text-black">
+                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">HCP</span>
+                                    <span className="font-bold text-[12pt] sm:text-[15pt] text-black">
                                         {player.courseHandicap}
                                     </span>
                                 </div>
 
                                 {/* # (Rank) */}
                                 <div className="flex flex-col items-center min-w-[30px]">
-                                    <span className="text-[16pt] text-gray-400 uppercase font-bold tracking-wider">#</span>
-                                    <span className="font-bold text-[16pt] text-black">
+                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">#</span>
+                                    <span className="font-bold text-[12pt] sm:text-[15pt] text-black">
                                         {player.rank}
                                     </span>
                                 </div>
 
                                 {/* Tee */}
                                 <div className="flex flex-col items-center min-w-[30px]">
-                                    <span className="text-[16pt] text-gray-400 uppercase font-bold tracking-wider">Tee</span>
-                                    <span className="font-bold text-[16pt] text-gray-500">
+                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">Tee</span>
+                                    <span className="font-bold text-[12pt] sm:text-[15pt] text-gray-500">
                                         {(player as any).preferred_tee_box ? (player as any).preferred_tee_box.charAt(0) : 'W'}
                                     </span>
                                 </div>
@@ -419,22 +419,22 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                                     className="flex flex-col items-center min-w-[40px] cursor-pointer hover:bg-green-50 rounded-lg p-1 transition-colors relative group"
                                     onClick={() => setSelectedHandicapPlayerId(player.id)}
                                 >
-                                    <span className="text-[16pt] text-gray-400 uppercase font-bold tracking-wider">IDX</span>
-                                    <span className="font-bold text-[16pt] text-green-600 underline decoration-red-600 decoration-2 underline-offset-2 group-hover:text-green-800">
+                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">IDX</span>
+                                    <span className="font-bold text-[12pt] sm:text-[15pt] text-green-600 underline decoration-red-600 decoration-2 underline-offset-2 group-hover:text-green-800">
                                         {player.liveIndex.toFixed(1)}
                                     </span>
                                 </div>
 
                                 {/* YTD Points */}
                                 <div className="flex flex-col items-center min-w-[30px]">
-                                    <span className="text-[16pt] text-gray-400 uppercase font-bold tracking-wider">YTD</span>
-                                    <span className="font-bold text-[16pt] text-green-600">{player.points}</span>
+                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">YTD</span>
+                                    <span className="font-bold text-[12pt] sm:text-[15pt] text-green-600">{player.points}</span>
                                 </div>
 
                                 {/* Money */}
                                 <div className="flex flex-col items-center min-w-[50px]">
-                                    <span className="text-[16pt] text-gray-400 uppercase font-bold tracking-wider">$</span>
-                                    <span className="font-bold text-[16pt] text-green-600">${player.money.toFixed(2)}</span>
+                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">$</span>
+                                    <span className="font-bold text-[12pt] sm:text-[15pt] text-green-600">${player.money.toFixed(2)}</span>
                                 </div>
 
                                 {/* Edit Action */}
