@@ -67,6 +67,9 @@ export default function AppHeader() {
                         <span role="img" aria-label="golf" className="text-xl">⛳</span>
                         <span className="font-bold tracking-tight text-[18pt]">City Park Golf Club</span>
                     </Link>
+                    <Link href="/schedule" className="ml-4 text-sm font-bold text-gray-300 hover:text-white transition">
+                        SCHEDULE
+                    </Link>
                 </div>
 
                 <div className="flex items-center gap-4 px-3">
