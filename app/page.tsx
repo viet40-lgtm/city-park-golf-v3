@@ -102,10 +102,10 @@ export default async function Home() {
             of New Orleans
           </h1>
           <div className="flex flex-col gap-1 text-shadow-md w-full">
-            <p className="text-white text-[12pt] sm:text-[15pt] font-semibold drop-shadow-md leading-relaxed w-full">
+            <p className="text-white text-[14pt] sm:text-[16pt] font-semibold drop-shadow-md leading-relaxed w-full">
               Teeing off sunrise every Saturday at Bayou Oaks City Park Golf North Course.
             </p>
-            <p className="text-white/80 text-[12pt] sm:text-[15pt] mt-1 drop-shadow-sm font-medium w-full">
+            <p className="text-white/80 text-[14pt] sm:text-[16pt] mt-1 drop-shadow-sm font-medium w-full">
               1040 Filmore Ave, New Orleans, LA 70124.
             </p>
           </div>

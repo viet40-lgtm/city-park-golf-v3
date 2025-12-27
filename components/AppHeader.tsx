@@ -47,7 +47,8 @@ export default function AppHeader() {
             Cookies.set('admin_session', 'true', { expires: 7 });
             setIsAdmin(true);
             setShowLoginModal(false);
-            router.refresh(); // Refresh the page content to reflect admin status
+            window.dispatchEvent(new Event('admin-change')); // Notify other components
+            router.refresh();
         } else {
             alert('Incorrect Password');
         }
@@ -56,6 +57,7 @@ export default function AppHeader() {
     const handleLogout = () => {
         Cookies.remove('admin_session');
         setIsAdmin(false);
+        window.dispatchEvent(new Event('admin-change')); // Notify other components
         window.location.reload();
     };
 
@@ -66,9 +68,6 @@ export default function AppHeader() {
                     <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
                         <span role="img" aria-label="golf" className="text-xl">⛳</span>
                         <span className="font-bold tracking-tight text-[18pt]">City Park Golf Club</span>
-                    </Link>
-                    <Link href="/schedule" className="ml-4 text-sm font-bold text-gray-300 hover:text-white transition">
-                        SCHEDULE
                     </Link>
                 </div>
 

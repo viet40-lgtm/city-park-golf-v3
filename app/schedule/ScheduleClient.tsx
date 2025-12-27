@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createEvent, deleteEvent } from '../actions';
+import Cookies from 'js-cookie';
 
 interface Event {
     id: string;
@@ -20,10 +21,22 @@ interface ScheduleClientProps {
 export default function ScheduleClient({ initialEvents }: ScheduleClientProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newEventName, setNewEventName] = useState('');
     const [newEventDate, setNewEventDate] = useState('');
+
+    useEffect(() => {
+        const checkAdmin = () => {
+            const adminSession = Cookies.get('admin_session');
+            setIsAdmin(adminSession === 'true');
+        };
+
+        checkAdmin();
+        window.addEventListener('admin-change', checkAdmin);
+        return () => window.removeEventListener('admin-change', checkAdmin);
+    }, []);
 
     const handleAddEvent = async () => {
         if (!newEventName || !newEventDate) return;
@@ -46,18 +59,23 @@ export default function ScheduleClient({ initialEvents }: ScheduleClientProps) {
         });
     };
 
-    const handleDeleteEvent = (id: string) => {
-        if (confirm('Are you sure you want to delete this event?')) {
-            startTransition(async () => {
-                try {
-                    await deleteEvent(id);
-                    router.refresh();
-                } catch (error) {
-                    console.error('Failed to delete:', error);
-                    alert('Failed to delete event.');
-                }
-            });
-        }
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    const handleDeleteEvent = async (id: string) => {
+        if (!window.confirm('Are you sure you want to delete this event?')) return;
+
+        setDeletingId(id);
+        startTransition(async () => {
+            try {
+                await deleteEvent(id);
+                router.refresh();
+            } catch (error) {
+                console.error('Failed to delete:', error);
+                alert('Failed to delete event.');
+            } finally {
+                setDeletingId(null);
+            }
+        });
     };
 
     return (
@@ -75,12 +93,14 @@ export default function ScheduleClient({ initialEvents }: ScheduleClientProps) {
                     </div>
 
                     <div className="flex justify-end">
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="bg-black text-white text-[12pt] font-bold px-4 py-2 rounded-full hover:bg-gray-800 transition-colors shadow-sm whitespace-nowrap"
-                        >
-                            Add Event
-                        </button>
+                        {isAdmin && (
+                            <button
+                                onClick={() => setIsModalOpen(true)}
+                                className="bg-black text-white text-[12pt] font-bold px-4 py-2 rounded-full hover:bg-gray-800 transition-colors shadow-sm whitespace-nowrap"
+                            >
+                                Add Event
+                            </button>
+                        )}
                     </div>
                 </div>
             </header>
@@ -88,7 +108,7 @@ export default function ScheduleClient({ initialEvents }: ScheduleClientProps) {
             <main className="px-3 space-y-4">
                 {initialEvents.length === 0 && (
                     <div className="text-center py-10 text-gray-500 text-lg">
-                        No upcoming events found. Add one to get started!
+                        No upcoming events found. {isAdmin ? 'Add one to get started!' : 'Check back later!'}
                     </div>
                 )}
 
@@ -103,15 +123,21 @@ export default function ScheduleClient({ initialEvents }: ScheduleClientProps) {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={() => handleDeleteEvent(event.id)}
-                                disabled={isPending}
-                                className="p-2 text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg>
-                            </button>
-                        </div>
+                        {isAdmin && (
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => handleDeleteEvent(event.id)}
+                                    disabled={isPending || deletingId === event.id}
+                                    className="p-2 text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 min-w-[40px] flex items-center justify-center"
+                                >
+                                    {deletingId === event.id ? (
+                                        <span className="text-xs font-bold">...</span>
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg>
+                                    )}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 ))}
             </main>

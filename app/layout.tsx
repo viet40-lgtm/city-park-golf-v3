@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CPGC.app",
+  title: "Golf Club Management",
   description: "City Park Golf Club of New Orleans - Teeing off sunrise every Saturday.",
 };
 
