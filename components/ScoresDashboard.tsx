@@ -426,23 +426,23 @@ export default function ScoresDashboard({
                                         <>
                                             <button
                                                 onClick={() => handleCopyRound(round)}
-                                                className="p-2 text-black hover:text-slate-600 hover:bg-slate-50 rounded-full border border-slate-200 transition-all shadow-sm flex items-center justify-center"
+                                                className="p-2 text-black hover:text-slate-600 hover:bg-slate-50 rounded-full border border-slate-200 transition-colors shadow-sm flex items-center justify-center cursor-pointer"
                                                 title="Copy to Email"
                                             >
                                                 <CopyIcon className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => handleCopyEmails(round)}
-                                                className="p-2 text-black hover:text-slate-600 hover:bg-slate-50 rounded-full border border-slate-200 transition-all shadow-sm flex items-center justify-center"
+                                                className="p-2 text-black hover:text-slate-600 hover:bg-slate-50 rounded-full border border-slate-200 transition-colors shadow-sm flex items-center justify-center cursor-pointer"
                                                 title="Copy Emails"
                                             >
                                                 <MailIcon className="w-4 h-4" />
                                             </button>
                                             <Link
                                                 href={`/scores/${round.id}/edit`}
-                                                className="bg-black text-white text-[16pt] font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:bg-gray-800 transition-all shadow-lg active:scale-95 ml-2"
+                                                className="bg-black text-white text-[16pt] font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:bg-gray-800 transition-colors shadow-sm ml-2 cursor-pointer"
                                             >
-                                                Edit Round
+                                                Edit
                                             </Link>
                                         </>
                                     )}
@@ -490,7 +490,7 @@ export default function ScoresDashboard({
                                             </div>
                                         )}
                                         <table className="w-full text-sm">
-                                            <thead className="text-[14pt] text-black uppercase font-black tracking-[0.05em] sm:tracking-[0.1em] border-b border-slate-100 bg-white">
+                                            <thead className="text-[14pt] text-black font-black tracking-[0.05em] sm:tracking-[0.1em] border-b border-slate-100 bg-white">
                                                 <tr>
                                                     <th className="px-1 py-4 text-center w-6 sm:w-10">#</th>
                                                     <th className="px-1 py-4 text-left whitespace-nowrap">Name</th>
@@ -544,7 +544,7 @@ export default function ScoresDashboard({
                                                                 <button
                                                                     onClick={() => handlePlayerClick(rp.id)}
                                                                     disabled={isLoading}
-                                                                    className="text-left group/name flex flex-col whitespace-nowrap"
+                                                                    className="text-left group/name flex flex-col whitespace-nowrap cursor-pointer"
                                                                 >
                                                                     <span className="font-bold text-blue-600 text-[14pt] underline decoration-2 decoration-red-600 group-hover/name:text-blue-700 group-hover/name:decoration-red-700 transition-colors uppercase leading-tight">
                                                                         {firstName}
@@ -605,7 +605,7 @@ export default function ScoresDashboard({
                             <div className="p-1 bg-slate-50/50 text-center border-t border-slate-100">
                                 <button
                                     onClick={() => toggleRound(round.id)}
-                                    className="text-slate-500 hover:text-black font-black text-[16pt] uppercase tracking-widest transition-colors"
+                                    className="text-slate-500 hover:text-black font-black text-[16pt] uppercase tracking-widest transition-colors cursor-pointer"
                                 >
                                     {isExpanded ? 'Show less' : `+${round.players.length - 3} more player${round.players.length - 3 !== 1 ? 's' : ''}`}
                                 </button>
@@ -629,7 +629,7 @@ export default function ScoresDashboard({
                     <div className="flex justify-center pt-4">
                         <button
                             onClick={loadMore}
-                            className="bg-black text-white px-8 py-2 rounded-full font-bold text-[16pt] hover:bg-gray-800 transition-all shadow-md active:scale-95"
+                            className="bg-black text-white px-8 py-2 rounded-full font-bold text-[16pt] hover:bg-gray-800 transition-colors shadow-sm cursor-pointer"
                         >
                             More Rounds
                         </button>

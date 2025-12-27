@@ -6,6 +6,7 @@ import { Phone, Mail, Edit, Search, ArrowUp, ArrowDown, Copy } from 'lucide-reac
 import { calculateHandicap, HandicapInput } from '@/lib/handicap';
 import { PlayerWithRounds, PlayerProfileModal } from '@/components/PlayerProfileModal';
 import { HandicapHistoryModal } from '@/components/HandicapHistoryModal';
+import { StatsHistoryModal } from '@/components/StatsHistoryModal';
 
 interface PlayersClientProps {
     initialPlayers: PlayerWithRounds[];
@@ -24,12 +25,19 @@ interface ProcessedPlayer extends PlayerWithRounds {
     rank: number; // Official Rank based on Index
     points: number;
     money: number;
+    pointsBreakdown: Array<{ date: string; roundName?: string; amount: number; isTournament?: boolean }>;
+    moneyBreakdown: Array<{ date: string; roundName?: string; amount: number; isTournament?: boolean }>;
 }
 
 export default function PlayersClient({ initialPlayers, course }: PlayersClientProps) {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedPlayer, setSelectedPlayer] = useState<ProcessedPlayer | null>(null);
     const [selectedHandicapPlayerId, setSelectedHandicapPlayerId] = useState<string | null>(null);
+
+    // Stats History State
+    const [selectedStatsPlayer, setSelectedStatsPlayer] = useState<ProcessedPlayer | null>(null);
+    const [statsType, setStatsType] = useState<'points' | 'money'>('points');
+
     const [sortConfig, setSortConfig] = useState<{ key: SortKey; direction: 'asc' | 'desc' }>({ key: 'last_name', direction: 'asc' });
 
     // Helper: Calculate Course Handicap
@@ -77,19 +85,36 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
 
             const courseHandicap = getCourseHandicap(handicapIndex, (player as any).preferred_tee_box);
 
-            // Calculate Points (same logic as Scores page - tournament placement based)
-            let totalPoints = 0;
+            const pointsBreakdown: Array<{ date: string; roundName?: string; amount: number; isTournament?: boolean }> = [];
             const currentYear = new Date().getFullYear();
 
-            player.rounds.forEach((rp: any) => {
-                if (!rp.round.is_tournament || !rp.gross_score) return;
+            // Calculate Money & Points Breakdown
+            const moneyBreakdown: Array<{ date: string; roundName?: string; amount: number; isTournament?: boolean }> = [];
 
-                const roundYear = parseInt(rp.round.date?.split('-')[0] || '0');
+            player.rounds.forEach((rp: any) => {
+                const roundDate = rp.round.date;
+                const roundName = rp.round.name;
+                const isTournament = rp.round.is_tournament;
+
+                // Money
+                if (rp.payout && rp.payout > 0) {
+                    moneyBreakdown.push({
+                        date: roundDate,
+                        roundName,
+                        amount: rp.payout,
+                        isTournament
+                    });
+                }
+
+                // Points (Tournament & Gross Score Only)
+                if (!isTournament || !rp.gross_score) return;
+
+                const roundYear = parseInt(roundDate?.split('-')[0] || '0');
                 if (roundYear !== currentYear) return;
 
                 const par = rp.round.course.holes.reduce((sum: number, h: any) => sum + h.par, 0);
 
-                // Sort players by index for flighting
+                // Sort players by index for flighting (re-using logic from Scores to be consistent)
                 const sortedPlayers = [...rp.round.players].sort((a: any, b: any) => {
                     const idxA = a.index_at_time ?? a.player?.index ?? 0;
                     const idxB = b.index_at_time ?? b.player?.index ?? 0;
@@ -120,12 +145,19 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                         if (rank === 0) pts = 100; // 1st place
                         else if (rank === 1) pts = 75; // 2nd place
                         else if (rank === 2) pts = 50; // 3rd place
-                        totalPoints += pts;
+
+                        pointsBreakdown.push({
+                            date: roundDate,
+                            roundName,
+                            amount: pts,
+                            isTournament
+                        });
                     }
                 });
             });
 
-            const money = player.rounds.reduce((sum: number, r: any) => sum + (r.payout || 0), 0);
+            const totalPoints = pointsBreakdown.reduce((sum, item) => sum + item.amount, 0);
+            const money = moneyBreakdown.reduce((sum, item) => sum + item.amount, 0);
 
             return {
                 ...player,
@@ -136,6 +168,8 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                 roundCount: allRounds.length,
                 points: totalPoints,
                 money,
+                pointsBreakdown,
+                moneyBreakdown,
             };
         });
 
@@ -197,7 +231,7 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
     const SortButton = ({ label, sortKey }: { label: string, sortKey: SortKey }) => (
         <button
             onClick={() => handleSort(sortKey)}
-            className={`hover:text-black flex items-center gap-0.5 transition-colors ${sortConfig.key === sortKey ? 'text-black font-bold' : ''}`}
+            className={`hover:text-black flex items-center gap-0.5 transition-colors cursor-pointer ${sortConfig.key === sortKey ? 'text-black font-bold' : ''}`}
         >
             {label}
             {sortConfig.key === sortKey && (
@@ -313,14 +347,14 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                     <div className="flex gap-2">
                         <button
                             onClick={handleCopyMembers}
-                            className="flex items-center justify-center p-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all shadow-md active:scale-95"
+                            className="flex items-center justify-center p-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors shadow-sm cursor-pointer"
                             title="Copy Member List"
                         >
                             <Copy size={20} />
                         </button>
                         <button
                             onClick={handleCopyEmails}
-                            className="flex items-center justify-center p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all shadow-md active:scale-95"
+                            className="flex items-center justify-center p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-sm cursor-pointer"
                             title="Copy Emails"
                         >
                             <Mail size={20} />
@@ -335,7 +369,7 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                         <SortButton label="Last" sortKey="last_name" />
                         <SortButton label="First" sortKey="first_name" />
                         <SortButton label="Rank" sortKey="rank" />
-                        <SortButton label="YTD" sortKey="pts" />
+                        <SortButton label="Pts" sortKey="pts" />
                         <SortButton label="$" sortKey="money" />
                     </div>
                     <div className="ml-auto relative">
@@ -394,7 +428,7 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
 
                                 {/* HCP (Playing Handicap) */}
                                 <div className="flex flex-col items-center min-w-[30px]">
-                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">HCP</span>
+                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 font-bold tracking-wider">Hcp</span>
                                     <span className="font-bold text-[12pt] sm:text-[15pt] text-black">
                                         {player.courseHandicap}
                                     </span>
@@ -410,7 +444,7 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
 
                                 {/* Tee */}
                                 <div className="flex flex-col items-center min-w-[30px]">
-                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">Tee</span>
+                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 font-bold tracking-wider">Tee</span>
                                     <span className="font-bold text-[12pt] sm:text-[15pt] text-gray-500">
                                         {(player as any).preferred_tee_box ? (player as any).preferred_tee_box.charAt(0) : 'W'}
                                     </span>
@@ -421,26 +455,42 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                                     className="flex flex-col items-center min-w-[40px] cursor-pointer hover:bg-green-50 rounded-lg p-1 transition-colors relative group"
                                     onClick={() => setSelectedHandicapPlayerId(player.id)}
                                 >
-                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">IDX</span>
+                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 font-bold tracking-wider">Idx</span>
                                     <span className="font-bold text-[12pt] sm:text-[15pt] text-green-600 underline decoration-red-600 decoration-2 underline-offset-2 group-hover:text-green-800">
                                         {player.liveIndex.toFixed(1)}
                                     </span>
                                 </div>
 
                                 {/* YTD Points */}
-                                <div className="flex flex-col items-center min-w-[30px]">
-                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">YTD</span>
-                                    <span className="font-bold text-[12pt] sm:text-[15pt] text-green-600">{player.points}</span>
+                                <div
+                                    className="flex flex-col items-center min-w-[30px] cursor-pointer hover:bg-blue-50 rounded-lg p-1 transition-colors group"
+                                    onClick={() => {
+                                        setSelectedStatsPlayer(player);
+                                        setStatsType('points');
+                                    }}
+                                >
+                                    <span className="text-[12pt] sm:text-[15pt] text-gray-400 font-bold tracking-wider">Pts</span>
+                                    <span className="font-bold text-[12pt] sm:text-[15pt] text-blue-600 group-hover:text-blue-800 underline decoration-blue-200 decoration-2 underline-offset-2">
+                                        {player.points}
+                                    </span>
                                 </div>
 
                                 {/* Money */}
-                                <div className="flex flex-col items-center min-w-[50px]">
+                                <div
+                                    className="flex flex-col items-center min-w-[50px] cursor-pointer hover:bg-green-50 rounded-lg p-1 transition-colors group"
+                                    onClick={() => {
+                                        setSelectedStatsPlayer(player);
+                                        setStatsType('money');
+                                    }}
+                                >
                                     <span className="text-[12pt] sm:text-[15pt] text-gray-400 uppercase font-bold tracking-wider">$</span>
-                                    <span className="font-bold text-[12pt] sm:text-[15pt] text-green-600">${player.money.toFixed(2)}</span>
+                                    <span className="font-bold text-[12pt] sm:text-[15pt] text-green-600 group-hover:text-green-800 underline decoration-green-200 decoration-2 underline-offset-2">
+                                        ${player.money.toFixed(2)}
+                                    </span>
                                 </div>
 
                                 {/* Edit Action */}
-                                <button className="p-1 hover:bg-gray-100 rounded-full text-gray-400">
+                                <button className="p-1 hover:bg-gray-100 rounded-full text-gray-400 transition-colors cursor-pointer">
                                     <Edit className="w-4 h-4" />
                                 </button>
                             </div>
@@ -466,6 +516,17 @@ export default function PlayersClient({ initialPlayers, course }: PlayersClientP
                     playerId={selectedHandicapPlayerId}
                     isOpen={!!selectedHandicapPlayerId}
                     onClose={() => setSelectedHandicapPlayerId(null)}
+                />
+            )}
+
+            {/* Stats History Modal */}
+            {selectedStatsPlayer && (
+                <StatsHistoryModal
+                    isOpen={!!selectedStatsPlayer}
+                    onClose={() => setSelectedStatsPlayer(null)}
+                    playerName={`${selectedStatsPlayer.firstName} ${selectedStatsPlayer.lastName}`}
+                    type={statsType}
+                    history={statsType === 'points' ? selectedStatsPlayer.pointsBreakdown : selectedStatsPlayer.moneyBreakdown}
                 />
             )}
         </div>

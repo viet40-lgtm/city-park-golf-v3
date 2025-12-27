@@ -101,7 +101,7 @@ export default function PoolResults({
                                                 <div className="flex gap-3 items-center flex-1">
                                                     <button
                                                         onClick={() => handlePlayerClick(w.id)}
-                                                        className="flex flex-col text-left group-hover:scale-[1.02] transition-transform"
+                                                        className="flex flex-col text-left cursor-pointer"
                                                     >
                                                         <span className="text-[14pt] font-black text-blue-600 underline decoration-red-500 decoration-2 leading-tight">
                                                             {w.name.split(' ')[0]}
@@ -135,7 +135,7 @@ export default function PoolResults({
                                                 <div className="flex gap-3 items-center flex-1">
                                                     <button
                                                         onClick={() => handlePlayerClick(w.id)}
-                                                        className="flex flex-col text-left group-hover:scale-[1.02] transition-transform"
+                                                        className="flex flex-col text-left cursor-pointer"
                                                     >
                                                         <span className="text-[12pt] sm:text-[15pt] font-black text-blue-600 underline decoration-red-500 decoration-2 leading-tight">
                                                             {w.name.split(' ')[0]}
@@ -174,7 +174,7 @@ export default function PoolResults({
                                             <div className="flex gap-4 items-center flex-1">
                                                 <button
                                                     onClick={() => handlePlayerClick(w.id)}
-                                                    className="flex flex-col text-left group-hover:scale-[1.02] transition-transform"
+                                                    className="flex flex-col text-left cursor-pointer"
                                                 >
                                                     <span className="text-[12pt] sm:text-[15pt] font-black text-blue-600 underline decoration-red-500 decoration-2 leading-tight">
                                                         {w.name.split(' ')[0]}
