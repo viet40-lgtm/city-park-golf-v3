@@ -96,9 +96,9 @@ export default function ScheduleClient({ initialEvents }: ScheduleClientProps) {
                         {isAdmin && (
                             <button
                                 onClick={() => setIsModalOpen(true)}
-                                className="bg-black text-white text-[12pt] font-bold px-4 py-2 rounded-full hover:bg-gray-800 transition-colors shadow-sm whitespace-nowrap"
+                                className="bg-black text-white text-[18pt] font-bold px-4 py-2 rounded-full hover:bg-gray-800 transition-colors shadow-sm whitespace-nowrap cursor-pointer"
                             >
-                                Add Event
+                                New
                             </button>
                         )}
                     </div>
