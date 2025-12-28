@@ -548,6 +548,11 @@ export default function ScoresDashboard({
                                                                 >
                                                                     <span className="font-bold text-blue-600 text-[14pt] underline decoration-2 decoration-red-600 group-hover/name:text-blue-700 group-hover/name:decoration-red-700 transition-colors uppercase leading-tight">
                                                                         {firstName}
+                                                                        {(rp.tee_box?.name === 'White' || rp.tee_box?.name === 'Gold') && (
+                                                                            <span className="text-[10pt] text-gray-400 font-normal no-underline ml-1 inline-block">
+                                                                                {rp.tee_box.name === 'White' ? 'W' : 'G'}
+                                                                            </span>
+                                                                        )}
                                                                     </span>
                                                                     <span className="text-[14pt] text-black font-medium leading-none">
                                                                         {lastName}
