@@ -46,6 +46,7 @@ type RoundWithPlayers = {
             name: string;
             index: number;
             email?: string | null;
+            preferred_tee_box?: string | null;
         };
         tee_box: {
             name: string;
@@ -548,11 +549,26 @@ export default function ScoresDashboard({
                                                                 >
                                                                     <span className="font-bold text-blue-600 text-[14pt] underline decoration-2 decoration-red-600 group-hover/name:text-blue-700 group-hover/name:decoration-red-700 transition-colors uppercase leading-tight">
                                                                         {firstName}
-                                                                        {(rp.tee_box?.name === 'White' || rp.tee_box?.name === 'Gold') && (
-                                                                            <span className="text-[10pt] text-gray-400 font-normal no-underline ml-1 inline-block">
-                                                                                {rp.tee_box.name === 'White' ? 'W' : 'G'}
-                                                                            </span>
-                                                                        )}
+                                                                        {(() => {
+                                                                            // Prioritize preferred tee box if available
+                                                                            const pref = rp.player.preferred_tee_box ? rp.player.preferred_tee_box.toLowerCase() : null;
+                                                                            const recorded = rp.tee_box?.name ? rp.tee_box.name.toLowerCase() : null;
+
+                                                                            let displayTee = null;
+                                                                            if (pref === 'gold' || pref === 'white') {
+                                                                                displayTee = pref === 'white' ? 'W' : 'G';
+                                                                            } else if (recorded === 'gold' || recorded === 'white') {
+                                                                                displayTee = recorded === 'white' ? 'W' : 'G';
+                                                                            }
+
+                                                                            if (!displayTee) return null;
+
+                                                                            return (
+                                                                                <span className="text-[10pt] text-gray-400 font-normal no-underline ml-1 inline-block">
+                                                                                    {displayTee}
+                                                                                </span>
+                                                                            );
+                                                                        })()}
                                                                     </span>
                                                                     <span className="text-[14pt] text-black font-medium leading-none">
                                                                         {lastName}
